@@ -28,5 +28,9 @@ app.configure 'production', ->
 # Routes
 require('./routes').call app
 
+# Helpers
+app.helpers require('./helpers')
+
 app.listen 4000
 console.log "Express server listening on port %d", app.address().port
+

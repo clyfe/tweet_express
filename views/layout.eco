@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="/stylesheets/style.css"></link>
   </head>
   <body>
-    <%- @flash().info %>
+    <%- @flashes() %>
     <%- @body %>
   </body>
 </html>
+

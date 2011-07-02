@@ -6,3 +6,4 @@ module.exports = ->
     @flash 'info', 'The flash'
     @title = 'Express'
     @render 'index'
+

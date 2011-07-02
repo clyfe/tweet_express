@@ -17,7 +17,8 @@ class Context
   @api public
   ###
   @forward: -> 
-    args, object = utils.toArray(arguments), args.shift()
+    args = utils.toArray(arguments)
+    object = args.shift()
     (@::[m] = -> @[object][m].apply @[object], arguments) for m in args
     
   # some sugar to access common methods faster
@@ -50,7 +51,9 @@ class Context
   @request {Object} the router-provided Express Response object
   @api public
   ###
-  render: (template, fn) -> @response.render template, @, fn
+  render: (template, fn) -> 
+    @[k] = v for k, v of @response._locals # Express api compatibility
+    @response.render template, @, fn
 
 
 ###
