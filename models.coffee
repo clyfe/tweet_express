@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 
-mongoose.connect('mongodb://localhost/ct');
+mongoose.connect('mongodb://localhost/tweet_express');
 
 TweetSchema = new mongoose.Schema
   date: {type: Date, default: Date.now}
@@ -8,3 +8,4 @@ TweetSchema = new mongoose.Schema
   body: {type: String, default: 'ohai!'}
 
 exports.Tweet = mongoose.model('Tweet', TweetSchema);
+

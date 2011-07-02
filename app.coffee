@@ -2,13 +2,11 @@
 ###
 Module dependencies.
 ###
-
 express = require 'express'
 
 app = module.exports = express.createServer()
 
 # Configuration
-
 app.configure ->
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'eco'
@@ -31,6 +29,7 @@ require('./routes').call app
 # Helpers
 app.helpers require('./helpers')
 
-app.listen 4000
-console.log "Express server listening on port %d", app.address().port
+if require.main == module
+  app.listen 4000
+  console.log "Express server listening on port %d", app.address().port
 

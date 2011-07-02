@@ -10,6 +10,6 @@
 <br>
 
 <form action="/tweet">
-  <textarea name="body"></textarea><br>
+  <input type="text" name="body"></input><br>
   <input type="submit">
 </form>
