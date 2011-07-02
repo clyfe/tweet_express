@@ -27,20 +27,22 @@ class Context
     (@::[m] = -> @[object][m].apply @[object], arguments) for m in args
     
   # some sugar to access common methods faster
-  @forward 'request', 'params', 'session', 'flash'
-  @forward 'response', 'cookie', 'clearCookie', 'partial', 'redirect', 'download'
+  @forward 'req', 'param'
+  @forward 'res', 'redirect'
 
   ###
-  Creates a context instance
+  Creates a context instance, populated with req and res
 
-  @request {Object} the router-provided Express Request object
-  @request {Object} the router-provided Express Response object
+  @req {Object} the router-provided Express req object
+  @req {Object} the router-provided Express res object
   @api public
   ###
-  constructor: (@request, @response) ->
-  
+  constructor: (@req, @res) ->
+    @[k] = req[k] for k in ['app', 'session', 'flash']
+    @[k] = res[k] for k in ['cookie', 'clearCookie', 'partial', 'download']
+    
   ###
-  Renders a template via Express's Response#render, 
+  Renders a template via Express's res#render, 
   only it does so by providing the locals to the current context
   
       # app.coffee
@@ -52,18 +54,18 @@ class Context
       # index.eco
       <h1><%= @title %></h1>
       
-  @request {Object} the router-provided Express Request object
-  @request {Object} the router-provided Express Response object
+  @req {Object} the router-provided Express req object
+  @req {Object} the router-provided Express res object
   @api public
   ###
   render: (template, fn) -> 
-    @[k] = v for k, v of @response._locals # Express api compatibility
-    @response.render template, @, fn
+    @[k] = v for k, v of @res._locals # Express api compatibility
+    @res.render template, @, fn
 
 
 ###
 Returns a function that conforms to Express router api, that wraps the provided fn function.
-fn is executed in a Context object instance, at request time
+fn is executed in a Context object instance, at req time
 
     # app.coffee
     {to, Context} = require './control'

@@ -9,5 +9,5 @@ Renders flashes
 ###
 exports.flashes = ->
   '<div class="flashes">' +
-  ["<div class='#{k}'>#{v}</div>" for k, v of @flash()].join() + 
+  ["<div class='#{k}'>#{v}</div>" for k, v of @flash].join() + 
   '</div>'

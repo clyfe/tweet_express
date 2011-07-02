@@ -1,3 +1,15 @@
-<h1><%= @title %></h1>
-<p>Welcome to <%= @title %></p>
+<h1>Express</h1>
 <a href="/">Home</a>
+
+<br>
+
+<% for tweet in @tweets: %>
+<%= tweet.body %><br>
+<% end %>
+
+<br>
+
+<form action="/tweet">
+  <textarea name="body"></textarea><br>
+  <input type="submit">
+</form>
