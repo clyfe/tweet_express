@@ -8,8 +8,8 @@ module.exports = ->
     Tweet.find (err, @tweets) =>
       @render 'index'
 
-  @get '/tweet', to ->
-    @tweet = new Tweet body: @param 'body'
+  @post '/tweet', to ->
+    @tweet = new Tweet @param 'tweet'
     @tweet.save (err) =>
       @redirect 'back'
 

@@ -9,7 +9,7 @@
 
 <br>
 
-<form action="/tweet">
-  <input type="text" name="body"></input><br>
+<form action="/tweet" method="post">
+  <input type="text" name="tweet[body]"></input><br>
   <input type="submit">
 </form>
