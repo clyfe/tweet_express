@@ -30,7 +30,7 @@ Writes like so
 <% end %>
 
 <form action="/tweet" method="post">
-  <input type="text" name="tweet[body]"></input><br>
+  <input type="text" name="tweet[body]"></input>
   <input type="submit">
 </form>
 ```
