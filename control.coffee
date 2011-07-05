@@ -52,6 +52,20 @@ class Context
     @[k] = req[k] for k in ['app', 'session', 'flash']
     @[k] = res[k] for k in ['cookie', 'clearCookie', 'partial', 'download']
     
+    ###
+    A smart way to handle errors.
+    Ex.
+    
+      @get '/', to ->
+        Tweet.find (@err, @tweets) => @render 'index'
+      
+    @err {Object} the error to be forwarded to next
+    @api public
+    ###
+    @__defineSetter__ 'err', (err) ->
+      throw err if err
+
+    
   ###
   Renders a template via Express's res#render, 
   only it does so by providing the locals to the current context.
@@ -92,8 +106,12 @@ Ex.
 @fn {Function} the router callback function to be executed 
 @api public
 ###
-to = (fn) -> 
-  (req, res, next) -> fn.call(new Context req, res, next)
+to = (fn) ->
+  (req, res, next) -> 
+    try
+      fn.call(new Context req, res, next)
+    catch err
+      next(err)
 
 
 exports.Context = Context

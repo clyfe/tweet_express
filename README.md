@@ -11,13 +11,11 @@ Writes like so
 # routes.coffee
 
 @get '/', to ->
-  Tweet.find (err, @tweets) =>
-    @render 'index'
+  Tweet.find (@err, @tweets) => @render 'index' # auto-handles err, renders
 
 @post '/tweet', to ->
   @tweet = new Tweet @param 'tweet'
-  @tweet.save (err) =>
-    @redirect 'back'
+  @tweet.save (@err) => @redirect 'back' # auto-handles err, renders
 ```
 
 
