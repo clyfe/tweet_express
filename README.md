@@ -11,7 +11,8 @@ Writes like so
 # routes.coffee
 
 @get '/', to ->
-  Tweet.find (@err, @tweets) => @render 'index' # auto-handles err, renders
+  # auto-handles err via __defineSetter__ 'err', renders
+  Tweet.find (@err, @tweets) => @render 'index'
 
 @post '/tweet', to ->
   @tweet = new Tweet @param 'tweet'
