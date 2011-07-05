@@ -15,8 +15,8 @@ Writes like so
 ```
 
 
-```eco
-  # views/index.eco
+```html
+  <!-- views/index.eco -->
   <h1><%= @title %></h1>
 ```
 
