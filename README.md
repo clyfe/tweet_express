@@ -35,7 +35,7 @@ Writes like so
 </form>
 ```
 
-Look at `control.coffee file`, that's where all the magic happens.
+Look at `control.coffee`, file that's where all the magic happens.
 
 ### File structure
 
