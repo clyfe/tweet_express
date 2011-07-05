@@ -7,14 +7,14 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 
 Writes like so
 
-# routes.coffee
+routes.coffee
 ```coffeescript
   @get '/', to ->
     Tweet.find (err, @tweets) =>
       @render 'index'
 ```
 
-# views/index.eco
+views/index.eco
 ```eco
   <h1><%= @title %></h1>
 ```
