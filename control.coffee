@@ -1,5 +1,7 @@
 ###
 Utility file that provides mostly syntactic sugar
+1. A context class. Route functions get executed in instances of this class.
+2. The "to" function, that makes your arbitrary functions conform to Express router API
 ###
 
 
@@ -9,13 +11,22 @@ utils = require('express/lib/utils')
 ###
 A context in wich router functions are executed.
 Provides some sugar to common methods "params", "render" etc.
+Routes are executed on this class's instances, 
+so they can call @req, @res, @param, @redirect, @render etc.
 
 @api public
 ###
 class Context
 
   ###
-  Forwards method calls to certain properties
+  Internal utility to forward method calls to certain properties.
+  Ex.
+  
+      @forward 'req', 'param'
+  
+  same as
+  
+      param: -> @req.param.apply @req, arguments
   
   @object {String} the name of the property to forward calls to
   @methods {Strings...} the methods to be wired
@@ -43,7 +54,8 @@ class Context
     
   ###
   Renders a template via Express's res#render, 
-  only it does so by providing the locals to the current context
+  only it does so by providing the locals to the current context.
+  Ex.
   
       # app.coffee
       {to, Context} = require './control'
@@ -65,7 +77,8 @@ class Context
 
 ###
 Returns a function that conforms to Express router api, that wraps the provided fn function.
-fn is executed in a Context object instance, at req time
+fn is executed in a Context object instance, at req time.
+Ex.
 
     # app.coffee
     {to, Context} = require './control'
