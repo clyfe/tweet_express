@@ -24,10 +24,11 @@ Look at control.coffee file.
 
 ### File structure
 
+```
 app.coffee - server boot and configuration
 control.coffee - sugar layer lib code, you usually don't edit this file
 helpers.coffee - put your view helpers here
 models.coffee - Mongoose model code
 routes.coffee - routes definitions
 views/ - eco view files
-
+```
