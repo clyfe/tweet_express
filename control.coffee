@@ -48,7 +48,7 @@ class Context
   @req {Object} the router-provided Express res object
   @api public
   ###
-  constructor: (@req, @res) ->
+  constructor: (@req, @res, @next) ->
     @[k] = req[k] for k in ['app', 'session', 'flash']
     @[k] = res[k] for k in ['cookie', 'clearCookie', 'partial', 'download']
     
@@ -93,7 +93,7 @@ Ex.
 @api public
 ###
 to = (fn) -> 
-  (req, res) -> fn.call(new Context req, res)
+  (req, res, next) -> fn.call(new Context req, res, next)
 
 
 exports.Context = Context
