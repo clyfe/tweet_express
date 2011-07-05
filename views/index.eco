@@ -1,13 +1,9 @@
 <h1>Express</h1>
 <a href="/">Home</a>
 
-<br>
-
 <% for tweet in @tweets: %>
-<%= tweet.body %><br>
+  </p><%= tweet.body %></p>
 <% end %>
-
-<br>
 
 <form action="/tweet" method="post">
   <input type="text" name="tweet[body]"></input><br>

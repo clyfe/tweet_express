@@ -8,16 +8,32 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 Writes like so
 
 ```coffeescript
-  # routes.coffee
-  @get '/', to ->
-    Tweet.find (err, @tweets) =>
-      @render 'index'
+# routes.coffee
+
+@get '/', to ->
+  Tweet.find (err, @tweets) =>
+    @render 'index'
+
+@post '/tweet', to ->
+  @tweet = new Tweet @param 'tweet'
+  @tweet.save (err) =>
+    @redirect 'back'
 ```
 
 
 ```html
-  <!-- views/index.eco -->
-  <h1><%= @title %></h1>
+<!-- views/index.eco -->
+
+<h1>Express</h1>
+
+<% for tweet in @tweets: %>
+  <p><%= tweet.body %></p>
+<% end %>
+
+<form action="/tweet" method="post">
+  <input type="text" name="tweet[body]"></input><br>
+  <input type="submit">
+</form>
 ```
 
 Look at control.coffee file.
