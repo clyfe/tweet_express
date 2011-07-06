@@ -1,4 +1,4 @@
-{Context, to} = require './control'
+{Controller, to} = require './control'
 models = require './models'
 Tweet = models.Tweet
 
