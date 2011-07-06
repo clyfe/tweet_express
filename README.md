@@ -5,6 +5,10 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 
 ### Highlights
 
+* context object to execute route functions in it
+* auto-forwards errors to next when it's the case
+* less typing ie. `@render 'tpl'` instead `res.render 'tpl' locals: {...}`
+
 Writes like so
 
 ```coffeescript
@@ -12,6 +16,7 @@ Writes like so
 
 @get '/', to ->
   # auto-handles err via __defineSetter__ 'err', renders
+  # @tweets are available in views, no more `locals: {}` noise
   Tweet.find (@err, @tweets) => @render 'index'
 
 @post '/tweet', to ->
