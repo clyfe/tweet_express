@@ -1,6 +1,6 @@
 ###
 Utility file that provides mostly syntactic sugar
-1. A context class. Route functions get executed in instances of this class.
+1. A context class (controller). Route functions get executed in instances of this class.
 2. The "to" function, that makes your arbitrary functions conform to Express router API
 ###
 
@@ -22,7 +22,7 @@ class Controller
   Internal utility to forward method calls to certain properties.
   Ex.
   
-      @forward 'req', 'param'
+      @forward 'req', 'param', 'session'
   
   same as
   
@@ -73,7 +73,7 @@ class Controller
   Ex.
   
       # app.coffee
-      {to, Context} = require './control'
+      {to, Controller} = require './control'
       @get '/', to ->
         @title = 'Express'
         @render 'index'
@@ -96,7 +96,7 @@ fn is executed in a Context object instance, at req time.
 Ex.
 
     # app.coffee
-    {to, Context} = require './control'
+    {to, Controller} = require './control'
     @get '/', to ->
       @title = 'Express'
       @render 'index'
