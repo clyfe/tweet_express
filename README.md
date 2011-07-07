@@ -51,7 +51,7 @@ Look at `lib/control.coffee`, file that's where all the magic happens.
 
 2. Via [node-supervisor](https://github.com/isaacs/node-supervisor)
   * install `sudo npm install supervisor -g`  
-  * run with `supervisor app.coffee`
+  * run with `supervisor app/app.coffee`
 
 
 ### Debug
