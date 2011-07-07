@@ -2,7 +2,7 @@ cluster = require 'cluster'
 fs = require 'fs'
 path = require 'path'
 
-master = cluster('./app')
+master = cluster('./app/app')
   .in('development')
     .set('workers', 1)
     .use(cluster.reload())
@@ -16,7 +16,7 @@ master = cluster('./app')
     .use(cluster.pidfiles 'pids')
     .use(cluster.cli())
     .use(cluster.repl 9000)
-    .listen(80);
+    .listen(4000);
 
 master.on 'closing', ->
   for child in master.children
