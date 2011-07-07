@@ -3,6 +3,7 @@
 Application kikstart for Express + Mongoose in CoffeeScript with a thin sintactic sugar layer and minimal structure.  
 Makes writing small-ish Express apps in CoffeeScript a little better.
 
+
 ### Highlights
 
 * context object to execute route functions in it
@@ -42,6 +43,22 @@ Writes like so
 
 Look at `control.coffee`, file that's where all the magic happens.
 
+
+### Code reload
+
+1. Via [cluster reload](http://learnboost.github.com/cluster/docs/reload.html)
+  * `coffee cluster.coffee` (see `cluster.coffee` file)
+
+2. Via [node-supervisor](https://github.com/isaacs/node-supervisor)
+  * install `sudo npm install supervisor -g`  
+  * run with `supervisor app.coffee`
+
+
+### Debug
+
+See [node-inspector](https://github.com/dannycoates/node-inspector)
+
+
 ### File structure
 
 ```
@@ -52,3 +69,4 @@ models.coffee - Mongoose model code
 routes.coffee - routes definitions
 views/ - eco view files
 ```
+
