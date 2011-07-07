@@ -41,7 +41,7 @@ Writes like so
 </form>
 ```
 
-Look at `control.coffee`, file that's where all the magic happens.
+Look at `lib/control.coffee`, file that's where all the magic happens.
 
 
 ### Code reload
@@ -62,11 +62,13 @@ See [node-inspector](https://github.com/dannycoates/node-inspector)
 ### File structure
 
 ```
-app.coffee - server boot and configuration
-control.coffee - sugar layer lib code, you usually don't edit this file
-helpers.coffee - put your view helpers here
-models.coffee - Mongoose model code
-routes.coffee - routes definitions
-views/ - eco view files
+app/
+  app.coffee - server boot and configuration
+  helpers.coffee - put your view helpers here
+  models.coffee - Mongoose model code
+  routes.coffee - routes definitions
+  views/ - eco view files
+lib/
+  control.coffee - sugar layer lib code, where the magic happens, you usually don't edit this file
 ```
 
