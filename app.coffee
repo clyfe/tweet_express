@@ -1,4 +1,8 @@
+path = require 'path'
 express = require 'express'
+
+require.paths.unshift path.join(__dirname, 'app')
+require.paths.unshift path.join(__dirname, 'lib')
 
 module.exports = app = express.createServer()
 
@@ -20,10 +24,10 @@ app.configure 'production', ->
   @use express.errorHandler()
 
 # Routes
-require('./app/routes').call app
+require('routes').call app
 
 # Helpers
-app.helpers require('./app/helpers')
+app.helpers require('helpers')
 
 if require.main == module
   app.listen 4000

@@ -3,10 +3,10 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-    "cluster": ">= 0.0.1",
-    "eco": ">= 0.0.1",
-    "express": ">= 0.0.1",
-    "expresso": ">= 0.0.1",
-    "mongoose": ">= 0.0.1"
+    , "cluster": ">= 0.0.1"
+    , "eco": ">= 0.0.1"
+    , "express": ">= 0.0.1"
+    , "expresso": ">= 0.0.1"
+      "mongoose": ">= 0.0.1"
   }
 }
