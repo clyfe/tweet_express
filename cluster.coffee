@@ -20,6 +20,7 @@ master = cluster('./app')
     .listen(4000);
 
 ###
+# if use repl on fs socket, delete it on exit
 master.on 'closing', ->
   for child in master.children
     fs.unlink path.resolve("#{path.join(__dirname, './tmp/sockets')}/#{child.proc.pid}.sock")
