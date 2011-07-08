@@ -12,12 +12,15 @@ master = cluster('./app')
     .set('workers', 4)
     .use(cluster.logger 'logs')
   .in('all')
+    .set('socket path', './tmp/sockets')
     .use(cluster.stats())
-    .use(cluster.pidfiles 'pids')
+    .use(cluster.pidfiles './tmp/pids')
     .use(cluster.cli())
     .use(cluster.repl 9000)
     .listen(4000);
 
+###
 master.on 'closing', ->
   for child in master.children
-    fs.unlink path.resolve(path.join(__dirname, 'repl') + '/' + child.proc.pid + '.sock')
+    fs.unlink path.resolve("#{path.join(__dirname, './tmp/sockets')}/#{child.proc.pid}.sock")
+###
