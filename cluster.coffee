@@ -2,7 +2,7 @@ cluster = require 'cluster'
 fs = require 'fs'
 path = require 'path'
 
-master = cluster('./app/app')
+master = cluster('./app')
   .in('development')
     .set('workers', 1)
     .use(cluster.reload())
