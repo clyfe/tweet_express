@@ -1,6 +1,5 @@
 utils = require('express/lib/utils')
 
-
 ###
 A controller class that can be used:
 1. as context in wich router functions are executed
@@ -33,9 +32,12 @@ Controller example
 ###
 class Controller
 
+  # a Set is an array with unique elements
+  class Set extends Array
+    push: (x) -> super x unless x in @
+
   ###
   Internal utility to forward method calls to certain properties.
-  Ex.
   
       @forward 'req', 'param', 'session'
   
@@ -58,7 +60,7 @@ class Controller
   # some sugar to access common methods faster
   @forward 'req', 'param', 'app', 'session', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
-
+  
   ###
   Creates a context instance, populated with req, res, next
 
@@ -85,7 +87,6 @@ class Controller
   ###
   Renders a template via Express's res#render, 
   only it does so by providing the locals to the current context.
-  Ex.
   
       # app.coffee
       @get '/', to ->
@@ -102,6 +103,32 @@ class Controller
   render: (template, fn) -> 
     @[k] = v for k, v of @res._locals # Express api compatibility
     @res.render template, @, fn
+  
+  ###
+  Adnotation helper for action definitions.
+  Serves to differentiate between controller actions and regullar (private) methods.
+  
+     class Users extends Controller
+       @action index: ->
+         @log_req()
+         User.find (@err, @users) => @render 'users/index'
+       log_req: -> # regullar "private" method
+         req = new Request req: @req
+         req.save (@err) => console.log 'req logged'
+  
+  @action {Object} the router-provided Express req object
+  @api public
+  ###
+  @action: (action) ->
+    @actions ?= new Set
+    for k, v of action
+      @actions.push k
+      @::[k] = v
+      
+  @dispatch: (action, req, res, next) ->
+    throw new Error("#{action} is not a controller action") unless action in @actions
+    controller = new @(req, res, next)
+    controller[action]()
 
 
 module.exports = Controller

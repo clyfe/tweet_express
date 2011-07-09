@@ -31,9 +31,7 @@ to = (cb) ->
     when 'string'
       [controller, action] = cb.split '#'
       controller = require "controllers/#{controller}"
-      unless controller::hasOwnProperty(action) || typeof controller::[action] != 'function'
-        throw new Error("no action #{action} for controller #{controller}")
-      fn = (req, res, next) -> (new controller req, res, next)[action]()
+      fn = (req, res, next) -> controller.dispatch action, req, res, next
     else
       throw new Error("unknown route endpoint #{cb}")
   

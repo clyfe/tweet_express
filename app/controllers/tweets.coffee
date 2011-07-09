@@ -3,10 +3,10 @@ Tweet = require 'models/tweet'
 
 class Tweets extends Controller
   
-  index: ->
+  @action index: ->
     Tweet.find (@err, @tweets) => @render 'tweets/index'
     
-  create: ->
+  @action create: ->
     @tweet = new Tweet @param 'tweet'
     @tweet.save (@err) => @redirect 'back'
 
