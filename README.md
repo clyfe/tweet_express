@@ -41,7 +41,7 @@ Writes like so
 </form>
 ```
 
-Look at `lib/control.coffee`, file that's where all the magic happens.
+Look at `lib/controller.coffee`, file that's where all the magic happens.
 
 
 ### Code reload
@@ -69,6 +69,6 @@ app/
   routes.coffee - routes definitions
   views/ - eco view files
 lib/
-  control.coffee - sugar layer lib code, where the magic happens, you usually don't edit this file
+  controller.coffee - sugar layer lib code, where the magic happens, you usually don't edit this file
 ```
 
