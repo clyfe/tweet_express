@@ -66,12 +66,16 @@ See [node-inspector](https://github.com/dannycoates/node-inspector)
 
 ```
 app/
-  app.coffee - server boot and configuration
-  helpers.coffee - put your view helpers here
-  models.coffee - Mongoose model code
-  routes.coffee - routes definitions
+  controllers/ - controller files
+  models/ - Mongoose models
   views/ - eco view files
+  config.coffee - environment configuration, middleware, database connection
+  helpers.coffee - view helpers here
+  routes.coffee - routes definitions
 lib/
-  controller.coffee - sugar layer lib code, where the magic happens, you usually don't edit this file
+  controller.coffee - controller context
+  router_ds.coffee - routing helper
+app.coffee - server boot and configuration
+cluster.coffee - cluster support
 ```
 
