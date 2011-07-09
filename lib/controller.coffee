@@ -21,10 +21,10 @@ Controller example
   @get '/tweets/hi', to 'tweets#hi'
   
   class Tweets extends Controller
-    index: ->
+    @action index: ->
       @title = 'Hello'
       @render 'index'
-    hi: ->
+    @action hi: ->
       @title = 'Hi'
       @render 'hi'
 

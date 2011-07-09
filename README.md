@@ -9,6 +9,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 * context object to execute route functions in it
 * auto-forwards errors to next when it's the case
 * less typing ie. `@render 'tpl'` instead `res.render 'tpl' locals: {...}`
+* nice MVC structure inspired by Rails
 
 Writes like so
 
