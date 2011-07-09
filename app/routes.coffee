@@ -1,6 +1,4 @@
-{Controller, to} = require 'controller'
-models = require './models'
-Tweet = models.Tweet
+to = require 'router_dsl'
 
 module.exports = ->
 
@@ -9,7 +7,7 @@ module.exports = ->
     @title = "Hello from route function!"
     @render 'index'
 
-  # Can controller actions callbacks
+  # Can use controller actions callbacks
   @get '/tweets', to 'tweets#index'
   @post '/tweets', to 'tweets#create'
 

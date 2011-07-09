@@ -1,4 +1,5 @@
 express = require 'express'
+mongoose = require 'mongoose'
 
 module.exports = ->
 
@@ -11,9 +12,11 @@ module.exports = ->
     @use express.methodOverride()
     @use @router
     @use express.static(__dirname + '/../public')
+    mongoose.connect 'mongodb://localhost/tweet_express'
 
   @configure 'development', ->
     @use express.errorHandler(dumpExceptions: true, showStack: true)
 
   @configure 'production', ->
     @use express.errorHandler()
+

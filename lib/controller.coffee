@@ -1,18 +1,33 @@
-###
-Utility file that provides mostly syntactic sugar
-1. A context class (controller). Route functions get executed in instances of this class.
-2. The "to" function, that makes your arbitrary functions conform to Express router API
-###
-
-
 utils = require('express/lib/utils')
 
 
 ###
-A context in wich router functions are executed.
+A controller class that can be used:
+1. as context in wich router functions are executed
+2. as a base class for your custom controllers
+
 Provides some sugar to common methods "params", "render" etc.
 Routes are executed on this class's instances, 
 so they can call @req, @res, @param, @redirect, @render etc.
+
+Route example
+
+  @get '/', to ->
+    @title = 'Hello!'
+    @render 'index'
+    
+Controller example
+
+  @get '/tweets', to 'tweets#index'
+  @get '/tweets/hi', to 'tweets#hi'
+  
+  class Tweets extends Controller
+    index: ->
+      @title = 'Hello'
+      @render 'index'
+    hi: ->
+      @title = 'Hi'
+      @render 'hi'
 
 @api public
 ###
@@ -89,48 +104,5 @@ class Controller
     @res.render template, @, fn
 
 
-###
-Returns a function that conforms to Express router api, that wraps the provided fn function.
-fn is executed in a Context object instance, at req time.
-
-Route function callback ex.
-
-    # routes.coffee
-    @get '/', to ->
-      @title = 'Express'
-      @render 'index'
-
-    # index.eco
-    <h1><%= @title %></h1>
-
-Controller callback ex.
-
-    # routes.coffee
-    @get '/', to 'tweets#index'
-
-@fn {Function} the router callback function to be executed 
-@api public
-###
-to = (cb) ->
-  
-  switch typeof cb
-    when 'function'
-      fn = (req, res, next) -> cb.call(new Controller req, res, next)
-    when 'string'
-      [controller, action] = cb.split '#'
-      controller = require "controllers/#{controller}"
-      unless controller::hasOwnProperty(action) || typeof controller::[action] != 'function'
-        throw new Error("no action #{action} for controller #{controller}")
-      fn = (req, res, next) -> (new controller req, res, next)[action]()
-    else
-      throw new Error("unknown route endpoint #{cb}")
-  
-  (req, res, next) -> 
-    try fn(req, res, next)
-    catch err
-      next(err)
-
-
-exports.Controller = Controller
-exports.to = to
+module.exports = Controller
 
