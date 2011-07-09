@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="/stylesheets/style.css"></link>
   </head>
   <body>
+  
+    <h1>Express</h1>
+  
+    <a href="/">Home</a> |
+    <a href="/tweets">Tweets</a>
+  
     <%- @flashes() %>
     <%- @body %>
   </body>

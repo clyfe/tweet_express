@@ -4,10 +4,12 @@ Tweet = models.Tweet
 
 module.exports = ->
 
+  # Can use function callbacks
   @get '/', to ->
-    Tweet.find (@err, @tweets) => @render 'index'
+    @title = "Hello from route function!"
+    @render 'index'
 
-  @post '/tweets', to ->
-    @tweet = new Tweet @param 'tweet'
-    @tweet.save (@err) => @redirect 'back'
+  # Can controller actions callbacks
+  @get '/tweets', to 'tweets#index'
+  @post '/tweets', to 'tweets#create'
 

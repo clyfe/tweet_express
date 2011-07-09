@@ -92,9 +92,10 @@ class Controller
 ###
 Returns a function that conforms to Express router api, that wraps the provided fn function.
 fn is executed in a Context object instance, at req time.
-Ex.
 
-    # app.coffee
+Route function callback ex.
+
+    # routes.coffee
     @get '/', to ->
       @title = 'Express'
       @render 'index'
@@ -102,13 +103,30 @@ Ex.
     # index.eco
     <h1><%= @title %></h1>
 
+Controller callback ex.
+
+    # routes.coffee
+    @get '/', to 'tweets#index'
+
 @fn {Function} the router callback function to be executed 
 @api public
 ###
-to = (fn) ->
+to = (cb) ->
+  
+  switch typeof cb
+    when 'function'
+      fn = (req, res, next) -> cb.call(new Controller req, res, next)
+    when 'string'
+      [controller, action] = cb.split '#'
+      controller = require "controllers/#{controller}"
+      unless controller::hasOwnProperty(action) || typeof controller::[action] != 'function'
+        throw new Error("no action #{action} for controller #{controller}")
+      fn = (req, res, next) -> (new controller req, res, next)[action]()
+    else
+      throw new Error("unknown route endpoint #{cb}")
+  
   (req, res, next) -> 
-    try
-      fn.call(new Controller req, res, next)
+    try fn(req, res, next)
     catch err
       next(err)
 
