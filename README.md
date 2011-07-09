@@ -15,14 +15,17 @@ Writes like so
 ```coffeescript
 # routes.coffee
 
+# function callbacks
 @get '/', to ->
   # auto-handles err via __defineSetter__ 'err', renders
   # @tweets are available in views, no more `locals: {}` noise
   Tweet.find (@err, @tweets) => @render 'index'
 
-@post '/tweet', to ->
-  @tweet = new Tweet @param 'tweet'
-  @tweet.save (@err) => @redirect 'back' # auto-handles err, renders
+# controller callbacks
+@get '/', to 'tweets#index'
+
+# index.eco
+<h1><%= @title %></h1>
 ```
 
 
