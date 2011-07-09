@@ -5,7 +5,7 @@
   </p><%= tweet.body %></p>
 <% end %>
 
-<form action="/tweet" method="post">
+<form action="/tweets" method="post">
   <input type="text" name="tweet[body]"></input>
   <input type="submit">
 </form>
