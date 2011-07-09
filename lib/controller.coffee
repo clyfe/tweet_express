@@ -73,7 +73,6 @@ class Controller
   Ex.
   
       # app.coffee
-      {to, Controller} = require './control'
       @get '/', to ->
         @title = 'Express'
         @render 'index'
@@ -96,7 +95,6 @@ fn is executed in a Context object instance, at req time.
 Ex.
 
     # app.coffee
-    {to, Controller} = require './control'
     @get '/', to ->
       @title = 'Express'
       @render 'index'

@@ -1,4 +1,4 @@
-{Controller, to} = require 'control'
+{Controller, to} = require 'controller'
 models = require './models'
 Tweet = models.Tweet
 
