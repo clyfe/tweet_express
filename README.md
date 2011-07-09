@@ -30,7 +30,7 @@ Writes like so
 
 
 ```html
-<!-- views/index.eco -->
+<!-- views/tweets/index.eco -->
 
 <h1>Express</h1>
 
