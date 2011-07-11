@@ -75,7 +75,7 @@ app/
   routes.coffee - routes definitions
 lib/
   controller.coffee - controller context
-  router_ds.coffee - routing helper
+  router_dsl.coffee - routing helper
 app.coffee - server boot and configuration
 cluster.coffee - cluster support
 ```
