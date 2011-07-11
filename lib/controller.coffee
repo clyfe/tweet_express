@@ -11,28 +11,28 @@ so they can call @req, @res, @param, @redirect, @render etc.
 
 Route example
 
-  @get '/', to ->
-    @title = 'Hello!'
-    @render 'index'
+    @get '/', to ->
+      @title = 'Hello'
+      @render 'index'
     
 Controller example
 
-  @get '/tweets', to 'tweets#index'
-  @get '/tweets/hi', to 'tweets#hi'
+    @get '/tweets', to 'tweets#index'
   
-  class Tweets extends Controller
-    @action index: ->
-      @title = 'Hello'
-      @render 'index'
-    @action hi: ->
-      @title = 'Hi'
-      @render 'hi'
+    class Tweets extends Controller
+      @action index: ->
+        @title = 'Hello'
+        @render 'index'
 
 @api public
 ###
 class Controller
 
-  # a Set is an array with unique elements
+  ### 
+  A Set is an array with unique elements
+  
+  @api private
+  ###
   class Set extends Array
     push: (x) -> super x unless x in @
 
@@ -47,7 +47,7 @@ class Controller
   
   @object {String} the name of the property to forward calls to
   @methods {Strings...} the methods to be wired
-  @api public
+  @api private
   ###
   @forward: -> 
     args = utils.toArray(arguments)
@@ -58,6 +58,7 @@ class Controller
         proto[m] = -> @[object][m].apply @[object], arguments
     
   # some sugar to access common methods faster
+  # TODO: document theese ?
   @forward 'req', 'param', 'app', 'session', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
@@ -66,6 +67,7 @@ class Controller
 
   @req {Object} the router-provided Express req object
   @req {Object} the router-provided Express res object
+  @next {Object} the in-router-provided next middleware, (error catcher etc.)
   @api public
   ###
   constructor: (@req, @res, @next) ->
@@ -74,8 +76,8 @@ class Controller
   A smart way to handle errors.
   Ex.
   
-    @get '/', to ->
-      Tweet.find (@err, @tweets) => @render 'index'
+      @get '/', to ->
+        Tweet.find (@err, @tweets) => @render 'index'
     
   @err {Object} the error to be forwarded to next
   @api public
@@ -96,8 +98,8 @@ class Controller
       # index.eco
       <h1><%= @title %></h1>
       
-  @req {Object} the router-provided Express req object
-  @req {Object} the router-provided Express res object
+  @template {Object} template name/path (index, index.eco etc.)
+  @fn {Object} optional callback, see Express.Response#render
   @api public
   ###
   render: (template, fn) -> 
@@ -108,27 +110,37 @@ class Controller
   Adnotation helper for action definitions.
   Serves to differentiate between controller actions and regullar (private) methods.
   
-     class Users extends Controller
-       @action index: ->
-         @log_req()
-         User.find (@err, @users) => @render 'users/index'
-       log_req: -> # regullar "private" method
-         req = new Request req: @req
-         req.save (@err) => console.log 'req logged'
+      class Users extends Controller
+        @action index: ->
+          @log_req()
+          User.find (@err, @users) => @render 'users/index'
+        log_req: -> # regullar "private" method, cannot be called as an action
+          req = new Request req: @req
+          req.save (@err) => console.log 'req logged'
   
   @action {Object} the router-provided Express req object
   @api public
   ###
   @action: (action) ->
-    @actions ?= new Set
+    @actions = new Set unless @hasOwnProperty 'actions'
     for k, v of action
       @actions.push k
       @::[k] = v
+  
+  ###
+  Dispatch requests
+  
+      class Users extends Controller
+        ... actions
       
-  @dispatch: (action, req, res, next) ->
+      @get '/users', Users.to_middleware 'index'
+  
+  @action {Object} the router-provided Express req object
+  @api public
+  ###
+  @to_middleware: (action) ->
     throw new Error("#{action} is not a controller action") unless action in @actions
-    controller = new @(req, res, next)
-    controller[action]()
+    (req, res, next) => (new @(req, res, next))[action]()
 
 
 module.exports = Controller

@@ -1,5 +1,6 @@
 to = require 'router_dsl'
 
+
 module.exports = ->
 
   # Can use function callbacks
@@ -9,5 +10,5 @@ module.exports = ->
 
   # Can use controller actions callbacks
   @get '/tweets', to 'tweets#index'
-  @post '/tweets', to 'tweets#create'
+  @post '/tweets', to controller: 'tweets', action: 'create'
 

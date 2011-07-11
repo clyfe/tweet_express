@@ -24,6 +24,7 @@ Writes like so
 
 # controller callbacks
 @get '/', to 'tweets#index'
+@get '/create', to controller: 'tweets', action: 'create'
 
 # index.eco
 <h1><%= @title %></h1>
