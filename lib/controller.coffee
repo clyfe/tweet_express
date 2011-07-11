@@ -128,10 +128,12 @@ class Controller
       @::[k] = v
   
   ###
-  Dispatch requests
+  Returns a Connect conforming callback function, that runs on the calling controller's instances.
   
       class Users extends Controller
-        ... actions
+        @action index: -> @render 'index'
+
+      class Sessions extends Controller
       
       @get '/users', Users.to_middleware 'index'
       @get '/login', Sessions.to_middleware -> @render 'login_form'
