@@ -28,7 +28,7 @@ to = (cb) ->
   
   fn = switch typeof cb
     when 'function'
-      (req, res, next) -> cb.call(new Controller req, res, next)
+      Controller.to_middleware cb
     when 'string'
       [controller, action] = cb.split '#'
       require("controllers/#{controller}").to_middleware action
@@ -39,7 +39,8 @@ to = (cb) ->
       throw new Error("unknown route endpoint #{cb}")
   
   (req, res, next) -> 
-    try fn(req, res, next)
+    try
+      fn(req, res, next)
     catch err
       next(err)
 

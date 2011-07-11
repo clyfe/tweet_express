@@ -134,13 +134,20 @@ class Controller
         ... actions
       
       @get '/users', Users.to_middleware 'index'
+      @get '/login', Sessions.to_middleware -> @render 'login_form'
   
   @action {Object} the router-provided Express req object
   @api public
   ###
   @to_middleware: (action) ->
-    throw new Error("#{action} is not a controller action") unless action in @actions
-    (req, res, next) => (new @(req, res, next))[action]()
+    switch typeof action
+      when 'function'
+        (req, res, next) => action.call(new @(req, res, next))
+      when 'string'
+        throw new Error("#{action} is not a controller action") unless action in @actions
+        (req, res, next) => (new @(req, res, next))[action]()
+      else
+        throw new Error("unknown action #{cb}, only functions and strings valid actions")
 
 
 module.exports = Controller
