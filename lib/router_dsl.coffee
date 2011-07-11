@@ -21,7 +21,7 @@ Controller callback example:
     @get '/', to 'tweets#index'
     @get '/create', to controller: 'tweets', action: 'create'
 
-@cb {Function|String} the router callback function or controller string to be executed 
+@cb {Function|String|Object} the router callback function or controller-defining string/object
 @api public
 ###
 to = (cb) ->

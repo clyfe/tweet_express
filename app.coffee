@@ -1,8 +1,8 @@
-path = require 'path'
-express = require 'express'
-
 require.paths.unshift path.join(__dirname, 'app')
 require.paths.unshift path.join(__dirname, 'lib')
+
+path = require 'path'
+express = require 'express'
 
 module.exports = app = express.createServer()
 

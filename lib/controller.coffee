@@ -138,7 +138,7 @@ class Controller
       @get '/users', Users.to_middleware 'index'
       @get '/login', Sessions.to_middleware -> @render 'login_form'
   
-  @action {Object} the router-provided Express req object
+  @action {Object}  the router callback function or action-defining string
   @api public
   ###
   @to_middleware: (action) ->
