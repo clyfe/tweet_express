@@ -1,6 +1,7 @@
 Controller = require 'controller'
 Tweet = require 'models/tweet'
 
+
 class Tweets extends Controller
   
   @action index: ->
