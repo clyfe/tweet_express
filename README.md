@@ -46,7 +46,7 @@ Writes like so
 </form>
 ```
 
-Look at `lib/controller.coffee`, file that's where all the magic happens.
+Look at the code in the `lib/` folder, it's nicely documented.
 
 
 ### Code reload
