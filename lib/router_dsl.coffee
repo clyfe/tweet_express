@@ -1,5 +1,6 @@
 Controller = require 'controller'
 
+
 ###
 Returns a function that conforms to Express router api, that wraps the provided "cb" function or controller.
 If "cb" is a function, it is executed in a Context object instance, at req time.
@@ -38,7 +39,7 @@ to = (cb) ->
     else
       throw new Error("unknown route endpoint #{cb}")
   
-  (req, res, next) -> 
+  (req, res, next) ->
     try
       fn(req, res, next)
     catch err

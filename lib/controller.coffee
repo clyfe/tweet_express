@@ -1,5 +1,6 @@
 utils = require('express/lib/utils')
 
+
 ###
 A controller class that can be used:
 1. as context in wich router functions are executed

@@ -1,6 +1,7 @@
 express = require 'express'
 mongoose = require 'mongoose'
 
+
 module.exports = ->
 
   @configure ->

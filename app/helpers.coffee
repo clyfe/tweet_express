@@ -1,4 +1,3 @@
-
 ###
 Renders flashes
 
