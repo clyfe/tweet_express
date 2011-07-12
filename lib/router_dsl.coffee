@@ -29,13 +29,13 @@ to = (cb) ->
   
   fn = switch typeof cb
     when 'function'
-      Controller.to_middleware cb
+      Controller.toMiddleware cb
     when 'string'
       [controller, action] = cb.split '#'
-      require("controllers/#{controller}").to_middleware action
+      require("controllers/#{controller}").toMiddleware action
     when 'object'
       {controller, action} = cb
-      require("controllers/#{controller}").to_middleware action
+      require("controllers/#{controller}").toMiddleware action
     else
       throw new Error("unknown route endpoint #{cb}")
   

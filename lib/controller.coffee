@@ -142,7 +142,7 @@ class Controller
   @action {Object}  the router callback function or action-defining string
   @api public
   ###
-  @to_middleware: (action) ->
+  @toMiddleware: (action) ->
     switch typeof action
       when 'function'
         (req, res, next) => action.call(new @(req, res, next))
