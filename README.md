@@ -6,30 +6,63 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 
 ### Highlights
 
-* context object to execute route functions in it
-* auto-forwards errors to next when it's the case
-* less typing ie. `@render 'tpl'` instead `res.render 'tpl' locals: {...}`
+* Controller objects that you can use as MVC or plain Express routes callbacks
+* niceties to make code less verbose, less typing, cleaner code
 * nice MVC structure inspired by Rails
+* flexible conventions
+* base application skeleton
 
-Writes like so
+
+### Examples
+
+#### Routing example
 
 ```coffeescript
-# routes.coffee
+# app/routes.coffee
+to = require 'router_dsl'
 
-# function callbacks
-@get '/', to ->
-  # auto-handles err via __defineSetter__ 'err', renders
-  # @tweets are available in views, no more `locals: {}` noise
-  Tweet.find (@err, @tweets) => @render 'index'
 
-# controller callbacks
-@get '/', to 'tweets#index'
-@get '/create', to controller: 'tweets', action: 'create'
+module.exports = ->
 
-# index.eco
-<h1><%= @title %></h1>
+  # Can use function callbacks
+  @get '/', to ->
+    @title = "Hello from route function!"
+    @render 'index'
+    
+  # Can use controller actions callbacks
+  @get '/tweets', to 'tweets#index'
+  @post '/tweets', to controller: 'tweets', action: 'create'
 ```
 
+
+#### Controller example
+
+```coffeescript
+# app/controllers/tweets.coffee
+Controller = require 'controller'
+Tweet = require 'models/tweet'
+
+
+class Tweets extends Controller
+  
+  @action index: ->
+    Tweet.find (@err, @tweets) => @render 'tweets/index'
+    
+  @action create: ->
+    @tweet = new Tweet @param 'tweet'
+    @tweet.save (@err) => @redirect 'back'
+
+
+module.exports = Tweets
+```
+
+
+#### Views example
+
+```html
+<!-- views/index.eco -->
+<h1><%= @title %></h1>
+```
 
 ```html
 <!-- views/tweets/index.eco -->
@@ -46,7 +79,7 @@ Writes like so
 </form>
 ```
 
-Look at the code in the `lib/` folder, it's nicely documented.
+Look at the code in the `lib/` folder to see the code making these posible, it's nicely documented.
 
 
 ### Code reload
@@ -56,7 +89,7 @@ Look at the code in the `lib/` folder, it's nicely documented.
 
 2. Via [node-supervisor](https://github.com/isaacs/node-supervisor)
   * install `sudo npm install supervisor -g`  
-  * run with `supervisor app/app.coffee`
+  * run with `supervisor app.coffee`
 
 
 ### Debug
