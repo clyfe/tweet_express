@@ -53,7 +53,7 @@ class Controller
         proto[m] = -> @[object][m].apply @[object], arguments
     
   # some sugar to access common methods faster
-  # TODO: document theese ?
+  # TODO: document these ?
   @forward 'req', 'param', 'app', 'session', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
@@ -108,7 +108,7 @@ class Controller
   # @action {Object} the router-provided Express req object
   # @api public
   @action: (action) ->
-    @actions = new Set unless @hasOwnProperty 'actions'
+    @actions = new Set() unless @hasOwnProperty 'actions'
     for k, v of action
       @actions.push k
       @::[k] = v
