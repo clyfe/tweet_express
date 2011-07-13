@@ -8,7 +8,7 @@ Controller = require 'controller'
 class MiddlewareDefinition
 
   # Path prefix of controller directories
-  # Id controller are in "/app/controllers" and "/app" is in the require path,
+  # If controller are in "/app/controllers" and "/app" is in the require path,
   # then set to "controllers"
   #
   # @api public
