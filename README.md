@@ -19,7 +19,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 
 ```coffeescript
 # app/routes.coffee
-to = require 'router_dsl'
+{to} = require 'router_dsl'
 
 
 module.exports = ->

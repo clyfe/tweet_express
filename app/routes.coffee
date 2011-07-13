@@ -1,4 +1,4 @@
-to = require 'router_dsl'
+{to} = require 'router_dsl'
 
 
 module.exports = ->

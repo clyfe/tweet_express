@@ -72,7 +72,7 @@ class Controller
   @api public
   ###
   constructor: (@req, @res, @next) ->
-    
+  
   ###
   A smart way to handle errors.
   Ex.
@@ -85,8 +85,7 @@ class Controller
   ###
   @::__defineSetter__ 'err', (err) ->
     throw err if err
-
-    
+  
   ###
   Renders a template via Express's res#render, 
   only it does so by providing the locals to the current context.
