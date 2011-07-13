@@ -38,7 +38,9 @@ class MiddlewareDefinition
     @wrapErrorsMiddleware(fn)
   
   # Validates the existence of controller/action and returns the resolved middleware
-  #
+  # 
+  # @controller {String} the controller name
+  # @action {String} the controller action
   # @api private
   resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
