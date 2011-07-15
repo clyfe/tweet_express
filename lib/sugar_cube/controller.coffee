@@ -1,4 +1,5 @@
-utils = require('express/lib/utils')
+metaCode = require 'meta_code'
+{Set} = require 'sc_support/data_structures'
 
 
 # A controller class that can be used:
@@ -27,30 +28,7 @@ utils = require('express/lib/utils')
 # @api public
 class Controller
  
-  # A Set is an array with unique elements
-  #
-  # @api private
-  class Set extends Array
-    push: (x) -> super x unless x in @
-
-  # Internal utility to forward method calls to certain properties.
-  #
-  #     @forward 'req', 'param', 'session'
-  #
-  # same as
-  #
-  #     param: -> @req.param.apply @req, arguments
-  #
-  # @object {String} the name of the property to forward calls to
-  # @methods {Strings...} the methods to be wired
-  # @api private
-  @forward: -> 
-    args = utils.toArray(arguments)
-    object = args.shift()
-    proto = @::
-    for m in args
-      do (m) ->
-        proto[m] = -> @[object][m].apply @[object], arguments
+  metaCode @, 'forward'
     
   # some sugar to access common methods faster
   # TODO: document these ?

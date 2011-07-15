@@ -1,4 +1,4 @@
-Controller = require 'controller'
+Controller = require 'sugar_cube/controller'
 
 
 # An overly-complicated definition-to-middleware made for the sole purpose so that

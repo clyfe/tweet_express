@@ -1,4 +1,4 @@
-Controller = require 'controller'
+Controller = require 'sugar_cube/controller'
 Tweet = require 'models/tweet'
 
 
