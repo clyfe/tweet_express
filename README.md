@@ -19,7 +19,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 
 ```coffeescript
 # app/routes.coffee
-{to} = require 'router_dsl'
+{to} = require 'sugar_cube/router_dsl'
 
 
 module.exports = ->
@@ -28,7 +28,7 @@ module.exports = ->
   @get '/', to ->
     @title = "Hello from route function!"
     @render 'index'
-    
+
   # Can use controller actions callbacks
   @get '/tweets', to 'tweets#index'
   @post '/tweets', to controller: 'tweets', action: 'create'
@@ -39,7 +39,7 @@ module.exports = ->
 
 ```coffeescript
 # app/controllers/tweets.coffee
-Controller = require 'controller'
+Controller = require 'sugar_cube/controller'
 Tweet = require 'models/tweet'
 
 
