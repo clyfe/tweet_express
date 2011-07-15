@@ -107,9 +107,7 @@ app/
   config.coffee - environment configuration, middleware, database connection
   helpers.coffee - view helpers here
   routes.coffee - routes definitions
-lib/
-  controller.coffee - controller context
-  router_dsl.coffee - routing helper
+lib/ - library code
 app.coffee - server boot and configuration
 cluster.coffee - cluster support
 ```
