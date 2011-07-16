@@ -13,13 +13,11 @@ utils = require('express/lib/utils')
 # @object {String} the name of the property to forward calls to
 # @methods {Strings...} the methods to be wired
 # @api public
-forward = ->
-  args = utils.toArray(arguments)
-  object = args.shift()
+forward = (property, methods...) ->
   proto = @::
-  for m in args
-    do (m) ->
-      proto[m] = -> @[object][m].apply @[object], arguments
+  for method in methods
+    do (method) ->
+      proto[method] = -> @[property][method].apply @[property], arguments
 
 
 exports.forward = forward
