@@ -4,7 +4,7 @@
 utils = require('express/lib/utils')
 
 
-# To enable a set of metacode utilities in your class use
+# Use this function to enable a set of metacode tools in your class
 #
 #     class Controller
 #       metaCode @, 'forward'
@@ -26,3 +26,4 @@ metaCode = ->
 
 
 module.exports = metaCode
+

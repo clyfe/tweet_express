@@ -8,3 +8,4 @@ class Set extends Array
   push: (x) -> super x unless x in @
   
 exports.Set = Set
+
