@@ -14,10 +14,10 @@
 # @object {Object} the class (in CoffeeScript sense) to be augmented
 # @modules {Strings...} the modules to bring in
 # @api public
-metaCode = (object, methods...) ->
-  for module in methods
-    meta = require("./tools/#{module}")
-    object[k] = meta[k] for k of meta
+metaCode = (object, tools...) ->
+  for toolName in tools
+    tool = require("./tools/#{toolName}")
+    object[method] = tool[method] for method of tool
 
 
 module.exports = metaCode
