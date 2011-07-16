@@ -9,8 +9,9 @@ utils = require('express/lib/utils')
 #
 # same as
 #
-#     param: -> @req.param.apply @req, arguments
-#     session: -> @req.session.apply @req, arguments
+#     class Controller
+#       param: -> @req.param.apply @req, arguments
+#       session: -> @req.session.apply @req, arguments
 #
 # @object {String} the name of the property to forward calls to
 # @methods {Strings...} the methods to be wired
