@@ -13,11 +13,19 @@ module.exports = ->
     @use express.methodOverride()
     @use @router
     @use express.static(__dirname + '/../public')
-    mongoose.connect 'mongodb://localhost/tweet_express'
+    
+  
+  # Per environment configuration
 
   @configure 'development', ->
     @use express.errorHandler(dumpExceptions: true, showStack: true)
+    mongoose.connect 'mongodb://localhost/tweet_express_development'
+
+  @configure 'test', ->
+    @use express.errorHandler(dumpExceptions: true, showStack: true)
+    mongoose.connect 'mongodb://localhost/tweet_express_test'
 
   @configure 'production', ->
     @use express.errorHandler()
+    mongoose.connect 'mongodb://localhost/tweet_express_production'
 
