@@ -37,9 +37,9 @@ module.exports =
         headers: {'Content-Type': 'text/html; charset=utf-8'},
       ,
         (res) ->
-          tweet.remove()
           assert.includes res.body, "</p>#{tweet.body}</p>"
-          doneTracker.emit 'testDone'
+          tweet.remove ->
+            doneTracker.emit 'testDone'
 
 
   'POST /tweets': ->
@@ -53,9 +53,10 @@ module.exports =
       status: 302, # redirects to referrer or base
     ,
       (res) -> 
-        Tweet.find {}, (err, tweets) ->
+        Tweet.find body: body, (err, tweets) ->
           assert.ok _.any tweets, (t) -> t.body == body
-          doneTracker.emit 'testDone'
+          Tweet.remove body: body, ->
+            doneTracker.emit 'testDone'
 
 
 totalTests = _.keys(module.exports).length
