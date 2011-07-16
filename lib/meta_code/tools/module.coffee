@@ -24,13 +24,13 @@
 include = (objects...) ->
   proto = @::
   for object in objects
-    for m of object
-      do (m) ->
-        switch typeof action
+    for k, p of object
+      do (k, p) ->
+        switch typeof p
         when 'function'
-          proto[m] = -> object[m].apply @, arguments
+          proto[k] = -> p.apply @, arguments
         else
-          proto[m] = object[m]
+          proto[k] = p
 
 
 # Copy into object all properties from module onto self
@@ -49,13 +49,13 @@ include = (objects...) ->
 extend = (objects...) ->
   resciever = @
   for object in objects
-    for m of object
-      do (m) ->
-        switch typeof action
+    for k, p of object
+      do (k, p) ->
+        switch typeof p 
         when 'function'
-          resciever[m] = -> object[m].apply resciever, arguments
+          resciever[k] = -> p.apply resciever, arguments
         else
-          resciever[m] = object[m]
+          resciever[k] = p
 
 
 exports.include = include
