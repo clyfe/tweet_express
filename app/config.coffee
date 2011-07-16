@@ -1,6 +1,4 @@
 express = require 'express'
-mongoose = require 'mongoose'
-
 
 module.exports = ->
 
@@ -19,13 +17,13 @@ module.exports = ->
 
   @configure 'development', ->
     @use express.errorHandler(dumpExceptions: true, showStack: true)
-    mongoose.connect 'mongodb://localhost/tweet_express_development'
+    @set 'mongoose url', 'mongodb://localhost/tweet_express_development'
 
   @configure 'test', ->
     @use express.errorHandler(dumpExceptions: true, showStack: true)
-    mongoose.connect 'mongodb://localhost/tweet_express_test'
+    @set 'mongoose url', 'mongodb://localhost/tweet_express_test'
 
   @configure 'production', ->
     @use express.errorHandler()
-    mongoose.connect 'mongodb://localhost/tweet_express_production'
+    @set 'mongoose url', 'mongodb://localhost/tweet_express_production'
 

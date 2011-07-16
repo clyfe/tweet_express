@@ -1,5 +1,6 @@
 path = require 'path'
 express = require 'express'
+mongoose = require 'mongoose'
 
 require.paths.unshift path.join(__dirname, 'app')
 require.paths.unshift path.join(__dirname, 'lib')
@@ -7,6 +8,7 @@ require.paths.unshift path.join(__dirname, 'lib')
 module.exports = app = express.createServer()
 
 require('config').call app
+mongoose.connect app.set('mongoose url')
 require('routes').call app
 app.helpers require('helpers')
 
