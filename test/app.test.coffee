@@ -62,5 +62,5 @@ totalTests = _.keys(module.exports).length
 testsDone = 0
 doneTracker.on 'testDone', -> 
   testsDone++
-  mongoose.disconnect() if testsDone == 3
+  mongoose.disconnect() if testsDone == totalTests
 
