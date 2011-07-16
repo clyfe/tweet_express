@@ -3,7 +3,9 @@ utils = require('express/lib/utils')
 
 # Forward method calls to certain properties.
 #
-#     @forward 'req', 'param', 'session'
+#     class Controller
+#       metaCode @, 'forward'
+#       @forward 'req', 'param', 'session'
 #
 # same as
 #
