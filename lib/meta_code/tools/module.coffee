@@ -1,3 +1,6 @@
+_ = require 'underscore'
+
+
 # Copy into object all properties from module onto self
 #
 #     Macros =
@@ -48,5 +51,23 @@ include = (objects...) ->
       proto[k] = p
 
 
+# The same as "include" only it does not copy the properties, it achieves
+# augmentation by injecting copies of module-objects into the receiver's
+# prototype chain
+#
+# @objects {Objects...} the objects to mix in
+# @api public
+includeInter = (objects...) ->
+  for object in objects
+    module = _.clone(object)
+    previousPrototype = @::
+    @:: = module
+    module.__proto__ = previousPrototype
+    # make sure to preserve the constructor property
+    @:: = previousPrototype.constructor if previousPrototype.hasOwnProperty 'constructor'
+
+
+exports.extend = extend
 exports.include = include
+exports.includeInter = includeInter
 
