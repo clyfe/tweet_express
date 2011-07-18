@@ -81,7 +81,7 @@ class MiddlewareDefinition
 #
 #@cb {Function|String|Object} the router callback function or controller-defining string/object
 #@api public
-to = (cb) -> (new MiddlewareDefinition(cb)).toMiddleware()
+to = (cb) -> new MiddlewareDefinition(cb).toMiddleware()
 
 
 exports.MiddlewareDefinition = MiddlewareDefinition
