@@ -64,7 +64,7 @@ includeInter = (objects...) ->
     @:: = module
     module.__proto__ = previousPrototype
     # make sure to preserve the constructor property
-    @:: = previousPrototype.constructor if previousPrototype.hasOwnProperty 'constructor'
+    @::constructor = previousPrototype.constructor if previousPrototype.hasOwnProperty 'constructor'
 
 
 exports.extend = extend
