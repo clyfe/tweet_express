@@ -30,10 +30,10 @@ class MiddlewareDefinition
         Controller.toMiddleware @cb
       when 'string'
         [controller, action] = @cb.split '#'
-        @resolveMiddleware controller, action
+        MiddlewareDefinition.resolveMiddleware controller, action
       when 'object'
         {controller, action} = @cb
-        @resolveMiddleware controller, action
+        MiddlewareDefinition.resolveMiddleware controller, action
       else
         throw new Error("unknown route endpoint #{@cb}")
   
@@ -41,14 +41,19 @@ class MiddlewareDefinition
   # 
   # @controller {String} the controller name
   # @action {String} the controller action (or skip if rest)
-  # @api private
-  resolveMiddleware: (controller, action) ->
+  # @api public
+  @resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
-    controller = require("#{@constructor.controllersPath}/#{controller}")
-    if action?
-      controller.toMiddleware action
-    else
-      controller.toRestMiddlewares()
+    controller = @findController controller
+    action = 'index' unless action?
+    controller.toMiddleware action
+    
+  # Requires the given controller based on the controllersPath configuration
+  #
+  # @controller {String} the controller name
+  # @api public
+  @findController: (controller) ->   
+    require("#{@controllersPath}/#{controller}")
 
 
 # Returns a function that conforms to Express router api, that wraps the provided "cb" function or controller.
@@ -89,7 +94,8 @@ to = (cb) -> new MiddlewareDefinition(cb).routable()
 resource = express.HTTPServer.prototype.resource
 express.HTTPServer.prototype.resource =
 express.HTTPSServer.prototype.resource = (name) ->
-  resource.call @, name, to controller: name
+  controller = MiddlewareDefinition.findController name
+  resource.call @, name, controller.toRestMiddlewares()
 
 
 exports.MiddlewareDefinition = MiddlewareDefinition
