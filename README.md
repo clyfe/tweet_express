@@ -18,7 +18,6 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 #### Routing example
 
 ```coffeescript
-# app/routes.coffee
 {to} = require 'sugar_cube/router_dsl'
 
 
@@ -32,6 +31,15 @@ module.exports = ->
   # Can use controller actions callbacks
   @get '/tweets', to 'tweets#index'
   @post '/tweets', to controller: 'tweets', action: 'create'
+
+  # Can use REST routing via express-resource
+  @resource 'users'
+  
+  # Namespaces
+  @namespace '/admin', ->
+    @get '/hi', to ->
+      @title = "Hello from namespace!"
+      @render 'index'
 ```
 
 
@@ -111,4 +119,9 @@ lib/ - library code
 app.coffee - server boot and configuration
 cluster.coffee - cluster support
 ```
+
+### Coming soon
+
+* Scaffolding
+* View helpers
 

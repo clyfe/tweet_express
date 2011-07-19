@@ -18,7 +18,9 @@ module.exports = ->
   # A scaffold controller
   @resource 'tags'
   
+  # Namespaces
   @namespace '/admin', ->
     @get '/hi', to ->
       @title = "Hello from namespace!"
       @render 'index'
+
