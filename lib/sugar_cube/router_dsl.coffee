@@ -1,3 +1,4 @@
+express = require 'express'
 Controller = require 'sugar_cube/controller'
 
 
@@ -20,43 +21,34 @@ class MiddlewareDefinition
   # @api public
   constructor: (@cb) ->
   
-  # Returns a Connect middleware for this definition
+  # Returns a Connect middleware or express-resources object of middlewares, for this definition
   #
   # @api public
-  toMiddleware: ->
-    fn = switch typeof @cb
+  routable: ->
+    switch typeof @cb
       when 'function'
         Controller.toMiddleware @cb
       when 'string'
         [controller, action] = @cb.split '#'
-        @resolveMiddleware(controller, action)
+        @resolveMiddleware controller, action
       when 'object'
         {controller, action} = @cb
-        @resolveMiddleware(controller, action)
+        @resolveMiddleware controller, action
       else
         throw new Error("unknown route endpoint #{@cb}")
-    @wrapErrorsMiddleware(fn)
   
-  # Validates the existence of controller/action and returns the resolved middleware
+  # Validates the existence of controller and returns the resolved middleware
   # 
   # @controller {String} the controller name
-  # @action {String} the controller action
+  # @action {String} the controller action (or skip if rest)
   # @api private
   resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
-    throw new Error("cannot resolve action") unless action?
     controller = require("#{@constructor.controllersPath}/#{controller}")
-    controller.toMiddleware action
-  
-  # Wraps a middleware in an error catching middlware that forwards any thrown errors to next()
-  #
-  # @api private
-  wrapErrorsMiddleware: (fn) ->
-    (req, res, next) ->
-      try
-        fn(req, res, next)
-      catch err
-        next(err)
+    if action?
+      controller.toMiddleware action
+    else
+      controller.toRestMiddlewares()
 
 
 # Returns a function that conforms to Express router api, that wraps the provided "cb" function or controller.
@@ -81,7 +73,23 @@ class MiddlewareDefinition
 #
 #@cb {Function|String|Object} the router callback function or controller-defining string/object
 #@api public
-to = (cb) -> new MiddlewareDefinition(cb).toMiddleware()
+to = (cb) -> new MiddlewareDefinition(cb).routable()
+
+
+# Monkey patch express-resource #route to autoload rest controller actions
+#
+#     class Users extends Controller
+#       @action index: -> @render 'index'
+#       ...
+#
+#     @resource 'users'
+#
+#@name {string} the controller name
+#@api public
+resource = express.HTTPServer.prototype.resource
+express.HTTPServer.prototype.resource =
+express.HTTPSServer.prototype.resource = (name) ->
+  resource.call @, name, to controller: name
 
 
 exports.MiddlewareDefinition = MiddlewareDefinition

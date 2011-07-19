@@ -106,12 +106,36 @@ class Controller
   @toMiddleware: (action) ->
     switch typeof action
       when 'function'
-        (req, res, next) => action.call(new @(req, res, next))
+        @wrapErrorsMiddleware (req, res, next) => action.call new @(req, res, next)
       when 'string'
         throw new Error("#{action} is not a controller action") unless action in @actions
-        (req, res, next) => (new @(req, res, next))[action]()
+        @wrapErrorsMiddleware (req, res, next) => new @(req, res, next)[action]()
       else
         throw new Error("unknown action #{cb}, only functions and strings valid actions")
+          
+  # Returns a express-resources conforming object, with the required actions
+  #
+  #     class Users extends Controller
+  #       @action index: -> @render 'index'
+  #       ...
+  # 
+  #     @resource 'users'
+  # 
+  # @api public
+  @toRestMiddlewares: ->
+    rest = {}
+    rest[action] = @toMiddleware(action) for action in @actions
+    rest
+
+  # Wraps a middleware in an error catching middlware that forwards any thrown errors to next()
+  #
+  # @api private
+  @wrapErrorsMiddleware: (fn) ->
+    (req, res, next) ->
+      try
+        fn(req, res, next)
+      catch err
+        next(err)
 
 
 module.exports = Controller

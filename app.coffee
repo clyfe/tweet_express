@@ -1,5 +1,6 @@
 path = require 'path'
 express = require 'express'
+require('express-resource')
 mongoose = require 'mongoose'
 
 require.paths.unshift path.join(__dirname, 'app')
