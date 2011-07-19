@@ -7,8 +7,10 @@
     , "eco": ">= 1.1.0-rc-1"
     , "express": ">= 2.4.3"
     , "express-resource": ">= 0.2.1"
+    , "express-namespace": "0.0.3"
     , "expresso": ">= 0.8.1"
     , "mongoose": ">= 1.7.2"
     , "underscore": ">= 1.1.7"
   }
 }
+
