@@ -38,8 +38,7 @@ module.exports =
       ,
         (res) ->
           assert.includes res.body, "</p>#{tweet.body}</p>"
-          tweet.remove ->
-            doneTracker.emit 'testDone'
+          tweet.remove -> doneTracker.emit 'testDone'
 
 
   'POST /tweets': ->
@@ -55,8 +54,7 @@ module.exports =
       (res) -> 
         Tweet.find body: body, (err, tweets) ->
           assert.ok _.any tweets, (t) -> t.body == body
-          Tweet.remove body: body, ->
-            doneTracker.emit 'testDone'
+          Tweet.remove body: body, -> doneTracker.emit 'testDone'
 
 
 totalTests = _.keys(module.exports).length
