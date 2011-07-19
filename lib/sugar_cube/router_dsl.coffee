@@ -78,7 +78,7 @@ class MiddlewareDefinition
 #
 #@cb {Function|String|Object} the router callback function or controller-defining string/object
 #@api public
-to = (cb) -> new MiddlewareDefinition(cb).toMiddleware()
+to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, module
 
 
 # Monkey patch express-resource #route to autoload rest controller actions
@@ -93,7 +93,7 @@ to = (cb) -> new MiddlewareDefinition(cb).toMiddleware()
 #@api public
 resource = express.HTTPServer.prototype.resource
 express.HTTPServer.prototype.resource =
-express.HTTPSServer.prototype.resource = (name) ->
+express.HTTPSServer.prototype.resource = (name) -> # TODO: collection, member
   controller = MiddlewareDefinition.findController name
   resource.call @, name, controller.toRestMiddlewares()
 

@@ -1,3 +1,5 @@
+<p>Hello Controller</p>
+
 <% for tweet in @tweets: %>
   </p><%= tweet.body %></p>
 <% end %>
