@@ -1,10 +1,12 @@
 path = require 'path'
 express = require 'express'
-require('express-resource')
+require 'express-resource'
 mongoose = require 'mongoose'
 
 require.paths.unshift path.join(__dirname, 'app')
 require.paths.unshift path.join(__dirname, 'lib')
+
+require 'sc_scaffold'
 
 module.exports = app = express.createServer()
 

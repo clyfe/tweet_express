@@ -1,0 +1,4 @@
+<% for record in @records: %>
+  </p><%= record %></p>
+<% end %>
+
