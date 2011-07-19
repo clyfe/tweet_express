@@ -44,7 +44,6 @@ class Controller
   constructor: (@req, @res, @next) ->
   
   # A smart way to handle errors.
-  # Ex.
   #
   #     @get '/', to ->
   #       Tweet.find (@err, @tweets) => @render 'index'
@@ -98,7 +97,9 @@ class Controller
   #
   #     class Sessions extends Controller
   #    
-  #     @get '/users', Users.to_middleware 'index'
+  #     @get '/users', Users.to_middleware 'index' # executes index action
+  #     
+  #     # uses Sessions controller as execution context for the callback function
   #     @get '/login', Sessions.to_middleware -> @render 'login_form'
   # 
   # @action {Object}  the router callback function or action-defining string
@@ -119,7 +120,7 @@ class Controller
   #       @action index: -> @render 'index'
   #       ...
   # 
-  #     @resource 'users'
+  #     Users.toRestMiddlewares() == {index: -> @render 'index', ...}
   # 
   # @api public
   @toRestMiddlewares: ->

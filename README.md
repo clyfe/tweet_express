@@ -124,4 +124,6 @@ cluster.coffee - cluster support
 
 * Scaffolding
 * View helpers
+* I18n
+* routing DSL improvements
 
