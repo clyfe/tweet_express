@@ -14,4 +14,7 @@ module.exports = ->
 
   # Can use REST routing via express-resource
   @resource 'users'
+  
+  # A scaffold controller
+  @resource 'tags'
 

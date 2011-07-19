@@ -9,7 +9,8 @@
   
     <a href="/">Home</a> |
     <a href="/tweets">Tweets</a> |
-    <a href="/users">Users</a>
+    <a href="/users">Users</a> |
+    <a href="/tags">Tags</a>
   
     <%- @flashes() %>
     <%- @body %>
