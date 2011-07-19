@@ -12,3 +12,6 @@ module.exports = ->
   @get '/tweets', to 'tweets#index'
   @post '/tweets', to controller: 'tweets', action: 'create'
 
+  # Can use REST routing via express-resource
+  @resource 'users'
+

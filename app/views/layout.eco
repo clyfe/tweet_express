@@ -8,7 +8,8 @@
     <h1>Express</h1>
   
     <a href="/">Home</a> |
-    <a href="/tweets">Tweets</a>
+    <a href="/tweets">Tweets</a> |
+    <a href="/users">Users</a>
   
     <%- @flashes() %>
     <%- @body %>
