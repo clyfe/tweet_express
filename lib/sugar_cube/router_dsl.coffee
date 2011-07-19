@@ -21,10 +21,10 @@ class MiddlewareDefinition
   # @api public
   constructor: (@cb) ->
   
-  # Returns a Connect middleware or express-resources object of middlewares, for this definition
+  # Returns a Connect middleware for this definition
   #
   # @api public
-  routable: ->
+  toMiddleware: ->
     switch typeof @cb
       when 'function'
         Controller.toMiddleware @cb
@@ -78,7 +78,7 @@ class MiddlewareDefinition
 #
 #@cb {Function|String|Object} the router callback function or controller-defining string/object
 #@api public
-to = (cb) -> new MiddlewareDefinition(cb).routable()
+to = (cb) -> new MiddlewareDefinition(cb).toMiddleware()
 
 
 # Monkey patch express-resource #route to autoload rest controller actions
