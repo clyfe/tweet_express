@@ -1,6 +1,5 @@
 metaCode = require 'meta_code'
 {Set} = require 'sc_support/data_structures'
-helpers = require 'sugar_cube/helpers'
 
 
 # A controller class that can be used:
@@ -29,12 +28,9 @@ helpers = require 'sugar_cube/helpers'
 # @api public
 class Controller
   
-  # use forward and module metacode helpers
-  metaCode @, 'forward', 'module'
-  
-  # include helpers
-  @include helpers
-    
+  # use forward metacode helpers
+  metaCode @, 'forward'
+
   # some sugar to access common methods faster
   @forward 'req', 'param', 'app', 'session', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
