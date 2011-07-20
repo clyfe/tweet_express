@@ -48,7 +48,7 @@ include = (objects...) ->
   proto = @::
   for object in objects
     for name, property of object
-      proto[k] = p
+      proto[name] = property
 
 
 # The same as "include" only it does not copy the properties, it achieves
