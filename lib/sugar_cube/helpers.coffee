@@ -4,24 +4,13 @@
 ###
 Renders flashes
 
-    # view.eco
-    <%- @flashes() %>
+    # view.coffee
+    div -> @flashes()
 
 @api public
 ###
 exports.flashes = ->
-  '<div class="flashes">' +
-  ["<div class='#{k}'>#{v}</div>" for k, v of @flash].join() + 
-  '</div>'
+  div class: "flashes", ->
+    for name, content of @flash
+      div class: name, -> content
 
-
-###
-View helpers via CoffeeKup
-
-    # view.eco
-    <%-@ck -> div class: 'big' %>
-
-@api public
-###
-coffeekup = require 'coffeekup'
-exports.ck = coffeekup.render

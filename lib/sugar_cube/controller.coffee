@@ -61,13 +61,13 @@ class Controller
   #       @title = 'Express'
   #       @render 'index'
   #
-  #     # index.eco
-  #     <h1><%= @title %></h1>
+  #     # index.coffee
+  #     h1 -> @title
   #
   # @template {Object} template name/path (index, index.eco etc.)
   # @fn {Object} optional callback, see Express.Response#render
   # @api public
-  render: (template, fn) -> 
+  render: (template, fn) ->
     @[k] = v for k, v of @res._locals # Express api compatibility
     @res.render template, @, fn
   

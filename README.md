@@ -67,24 +67,22 @@ module.exports = Tweets
 
 #### Views example
 
-```html
-<!-- views/index.eco -->
-<h1><%= @title %></h1>
+```coffeescript
+<!-- views/index.coffee -->
+h1 -> @title
 ```
 
 ```html
-<!-- views/tweets/index.eco -->
+<!-- views/tweets/index.coffee -->
 
-<h1>Express</h1>
+h1 -> 'Express'
 
-<% for tweet in @tweets: %>
-  <p><%= tweet.body %></p>
-<% end %>
+for tweet in @tweets
+  p -> tweet.body
 
-<form action="/tweet" method="post">
-  <input type="text" name="tweet[body]"></input>
-  <input type="submit">
-</form>
+form action: "/tweet", method: "post" ->
+  input type: "text", name: "tweet[body]"
+  input type: "submit"
 ```
 
 Look at the code in the `lib/` folder to see the code making these posible, it's nicely documented.
@@ -110,8 +108,9 @@ See [node-inspector](https://github.com/dannycoates/node-inspector)
 ```
 app/
   controllers/ - controller files
+  lang/ - I18n JSON files (soon to be CSON)
   models/ - Mongoose models
-  views/ - eco view files
+  views/ - CoffeeKup view files
   config.coffee - environment configuration, middleware, database connection
   helpers.coffee - view helpers here
   routes.coffee - routes definitions
@@ -120,10 +119,10 @@ app.coffee - server boot and configuration
 cluster.coffee - cluster support
 ```
 
+
 ### Coming soon
 
 * Scaffolding
 * View helpers
-* I18n
 * routing DSL improvements
 

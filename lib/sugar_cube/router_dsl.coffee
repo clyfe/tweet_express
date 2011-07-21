@@ -52,8 +52,8 @@ class MiddlewareDefinition
   #
   # @controller {String} the controller name
   # @api public
-  @findController: (controller) ->   
-    require("#{@controllersPath}/#{controller}")
+  @findController: (controller) ->
+    require "#{@controllersPath}/#{controller}"
 
 
 # Returns a function that conforms to Express router api, that wraps the provided "cb" function or controller.
@@ -67,8 +67,8 @@ class MiddlewareDefinition
 #       @title = 'Express'
 #       @render 'index'
 #
-#     # index.eco
-#     <h1><%= @title %></h1>
+#     # index.coffee
+#     h1 -> @title 
 #
 # Controller callback example:
 #
