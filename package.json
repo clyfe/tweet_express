@@ -4,8 +4,7 @@
   , "private": true
   , "dependencies": {
       "cluster": ">= 0.6"
-    , "eco": ">= 1.1.0-rc-1"
-    , "coffeekup": ">= 0.2"
+    , "coffeekup": "0.3.0beta"
     , "express": ">= 2.4.3"
     , "express-resource": ">= 0.2.1"
     , "express-namespace": ">= 0.0.3"
