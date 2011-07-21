@@ -44,7 +44,7 @@ class Samurai
   # like 'extend' and 'include' in our object, because the tool's methods 
   # get copied in our object
   metaCode @, 'module'
-  include Power
+  @include Power
 ```
 
 2. Use directly
