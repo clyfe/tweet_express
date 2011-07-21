@@ -35,7 +35,7 @@ There are two interfaces that can be used:
 metaCode = require 'meta_code'
 
 # a "module" we'll be including in our class
-power =
+Power =
   sword: 'katana'
   fight: -> console.log @sword
 
@@ -44,7 +44,7 @@ class Samurai
   # like 'extend' and 'include' in our object, because the tool's methods 
   # get copied in our object
   metaCode @, 'module'
-  include power
+  include Power
 ```
 
 2. Use directly
@@ -53,10 +53,10 @@ class Samurai
 module = require 'meta_code/tools/module' # include the tool
 
 # a "module" we'll be including in our class
-power =
+Power =
   sword: 'katana'
   fight: -> console.log @sword
 
 class Samurai
-  module.include.call @, power
+  module.include.call @, Power
 ```
