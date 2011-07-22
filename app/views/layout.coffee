@@ -16,6 +16,6 @@ html ->
     text ' | '
     a href: "/admin/hi", -> 'Hi'
     
-    # div -> @flashes()
+    div -> @flashes()
     div -> @body
 

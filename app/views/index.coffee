@@ -1,5 +1,4 @@
 p -> @title
 div -> 
-  p 'translating'
-  p @__ 'test'
+  p 'translation: ' + @__ 'test'
 

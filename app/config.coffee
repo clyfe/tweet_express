@@ -14,7 +14,7 @@ module.exports = ->
     @use express.bodyParser()
     @use express.methodOverride()
     
-    @use i18n(default: 'en', path: '/app/locales', views: '/app/views')
+    @use i18n(path: '/app/locales', views: '/app/views')
     @helpers(__: i18n.translate, n: i18n.plural, languages: i18n.languages)
 		
     @use @router

@@ -125,4 +125,6 @@ cluster.coffee - cluster support
 * Scaffolding
 * View helpers
 * routing DSL improvements
+* I18n api improvements
+* logging with winston https://github.com/indexzero/winston
 
