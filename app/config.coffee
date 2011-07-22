@@ -1,6 +1,6 @@
 express = require 'express'
 coffeekup = require 'coffeekup'
-i18n = require 'polyglot'
+i18n = require 'sugar_cube/i18n'
 
 
 module.exports = ->
@@ -15,7 +15,7 @@ module.exports = ->
     @use express.methodOverride()
     
     @use i18n(default: 'en', path: '/app/lang', views: '/app/views', debug: true)
-    @helpers(t: i18n.translate, n: i18n.plural, languages: i18n.languages)
+    @helpers(__: i18n.translate, n: i18n.plural, languages: i18n.languages)
 		
     @use @router
     @use express.static(__dirname + '/../public')

@@ -1,6 +1,9 @@
 # A collection of default view helpers to make things easier by default
 
 
+coffeekup = require 'coffeekup'
+
+
 ###
 Renders flashes
 
@@ -9,8 +12,8 @@ Renders flashes
 
 @api public
 ###
-exports.flashes = ->
-  div class: "flashes", ->
-    for name, content of @flash
-      div class: name, -> content
+#exports.flashes = coffeekup.compile ->
+#  div class: "flashes", ->
+#    for name, content of @flash
+#      div class: name, -> content
 
