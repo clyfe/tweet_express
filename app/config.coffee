@@ -14,7 +14,7 @@ module.exports = ->
     @use express.bodyParser()
     @use express.methodOverride()
     
-    @use i18n(default: 'en', path: '/app/lang', views: '/app/views', debug: true)
+    @use i18n(default: 'en', path: '/app/locales', views: '/app/views')
     @helpers(__: i18n.translate, n: i18n.plural, languages: i18n.languages)
 		
     @use @router
@@ -29,12 +29,10 @@ module.exports = ->
     @set 'mongoose url', 'mongodb://localhost/tweet_express_development'
 
   @configure 'test', ->
-    i18n.options.debug = false # less verbose
     @use express.errorHandler(dumpExceptions: true, showStack: true)
     @set 'mongoose url', 'mongodb://localhost/tweet_express_test'
 
   @configure 'production', ->
-    i18n.options.debug = false
     @use express.errorHandler()
     @set 'mongoose url', 'mongodb://localhost/tweet_express_production'
 

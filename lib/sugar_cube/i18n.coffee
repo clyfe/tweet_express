@@ -26,7 +26,7 @@ I18n = (opts) ->
     # load language files
     for file in files
       [country, lang] = file.match /^(\w{2})(-\w{2})?/
-      data = CSON.parseFile process.cwd() + options.path + '/' + file, (err, obj) ->
+      CSON.parseFile process.cwd() + options.path + '/' + file, (err, data) ->
         if err
           debug "failed to load language file #{file}"
         else
