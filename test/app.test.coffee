@@ -37,7 +37,7 @@ module.exports =
         headers: {'Content-Type': 'text/html; charset=utf-8'},
       ,
         (res) ->
-          assert.includes res.body, "</p>#{tweet.body}</p>"
+          assert.includes res.body, "<p>#{tweet.body}</p>"
           tweet.remove -> doneTracker.emit 'testDone'
 
 
