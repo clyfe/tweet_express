@@ -32,7 +32,7 @@ class Controller
   metaCode @, 'forward'
 
   # some sugar to access common methods faster
-  @forward 'req', 'param', 'app', 'session', 'flash'
+  @forward 'req', 'param', 'app', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
   # Creates a context instance, populated with req, res, next
@@ -42,6 +42,7 @@ class Controller
   # @next {Object} the in-router-provided next middleware, (error catcher etc.)
   # @api public
   constructor: (@req, @res, @next) ->
+    this.session = @req.session
   
   # A smart way to handle errors.
   #
@@ -50,8 +51,7 @@ class Controller
   #  
   # @err {Object} the error to be forwarded to next
   # @api public
-  @::__defineSetter__ 'err', (err) ->
-    throw err if err
+  @::__defineSetter__ 'err', (err) -> throw err if err
   
   # Renders a template via Express's res#render, 
   # only it does so by providing the locals to the current context.
