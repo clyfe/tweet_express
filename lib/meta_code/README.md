@@ -13,6 +13,9 @@ Curently, there the folowing tools are provided (nicely documented in the code)
   
 * forward
   - forward - forward a method call to an object property
+  
+* autoload
+  - autoload - load a property from a file
 
 ### Install
 
