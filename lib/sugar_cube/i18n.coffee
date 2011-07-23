@@ -7,12 +7,12 @@ fs = require 'fs'
 CSON = require 'cson'
 
 
-debug = (str) -> I18n.options.debug && console.log "[I18n] #{str}"
+options = default: 'en', path: '/lang', views: '/views'
 
 I18n = (opts) ->
 
   #default options
-  options = I18n.options = default: 'en', path: '/lang', views: '/views', debug: false
+  I18n.options = options
 
   # override defaults
   options[key] = val for own key, val of opts
@@ -20,45 +20,33 @@ I18n = (opts) ->
   # flag language existence  
   I18n.languages[options.default] = true
 
-  if path.existsSync(process.cwd() + options.path)
-    # accept either pt-BR.json or pt.json
-    files = fs.readdirSync(process.cwd() + options.path).filter (file) -> /\w{2}(-\w{2})?\.(json|cson)$/.test file
-    # load language files
-    for file in files
-      [country, lang] = file.match /^(\w{2})(-\w{2})?/
-      CSON.parseFile process.cwd() + options.path + '/' + file, (err, data) ->
-        if err
-          debug "failed to load language file #{file}"
-        else
-          lang = lang.toLowerCase()
-          I18n.strings[lang] = data
-          I18n.strings[country.toLowerCase()] = data if lang != country
-          I18n.languages[lang] = true
-          debug "loaded #{file}"
-  else
-    debug "path #{options.path} doesn't exist"
+  throw new Error("path #{options.path} doesn't exist") unless path.existsSync(process.cwd() + options.path)
+  # accept either pt-BR.json or pt.json
+  files = fs.readdirSync(process.cwd() + options.path).filter (file) -> /\w{2}(-\w{2})?\.(json|cson)$/.test file
+  # load language files
+  for file in files
+    [country, lang] = file.match /^(\w{2})(-\w{2})?/
+    CSON.parseFile process.cwd() + options.path + '/' + file, (err, data) ->
+      throw new Error("failed to load language file #{file}") if err
+      lang = lang.toLowerCase()
+      I18n.strings[lang] = data
+      I18n.strings[country.toLowerCase()] = data if lang != country
+      I18n.languages[lang] = true
 
   # sets users language
   return (req, res, next) ->
-    if req.session?.lang?
-      debug "current language: #{req.session.lang}"
-      next()
-      return
+    return next() if req.session?.lang?
   
     acceptHeader = req.header('Accept-Language')
     languages = acceptHeader.split(/,|;/g).filter((v) -> /^\w{2}(-\w{2})?$/.test) if acceptHeader
-    languages ?= []  
-    debug "accepted languages: "+languages.join(', ')
-      
-    if languages.length < 1
-      languages.push I18n.options.default
-      debug "empty Accept-Language header, reverting to default"
+    languages ?= []
+    languages.push I18n.options.default if languages.length < 1
       
     for lang in languages
       lang = lang.toLowerCase()
       if I18n.languages[lang] and req.session?
-        req.session.lang = lang.toLowerCase()
-        req.session.langbase = lang.toLowerCase().substring(0,2)
+        req.session.lang = lang
+        req.session.langbase = lang.substring(0,2)
         
     # default to EN
     if req.session? and not req.session.lang?
@@ -112,26 +100,17 @@ devStrings = {}
 
 # parse views for __
 I18n.updateStrings = (fn) ->
-
   fn ?= '__'
-
   viewsPath = process.cwd() + I18n.options.views
-
-  if not path.existsSync(viewsPath)
-    debug "no views found in #{viewsPath}"
-    return
-    
-  views = fs.readdirSync(viewsPath).filter (file) -> /\w+.(htm|html|ejs|tpl)$/.test file
+  return if not path.existsSync(viewsPath)
   
+  views = fs.readdirSync(viewsPath).filter (file) -> /\w+.(htm|html|ejs|tpl)$/.test file
   for view in views
-    debug "collecting strings from #{view}"
     contents = fs.readFileSync("#{viewsPath}/#{view}").toString()
     devStrings[string] = 1 for string in collectStrings(contents, fn)
 
-  files = fs.readdirSync( process.cwd() + I18n.options.path ).filter (file) ->
-    debug "loading language file #{file}"
-    # accept either pt-BR.json or pt.json
-    /\w{2}(-\w{2})?\.json$/.test file
+  # accept either pt-BR.json or pt.json
+  files = fs.readdirSync(process.cwd() + I18n.options.path).filter (file) -> /\w{2}(-\w{2})?\.json$/.test file
     
   for file in files
     
@@ -145,12 +124,9 @@ I18n.updateStrings = (fn) ->
     # add new strings
     for s, v of devStrings
       strings[s] = "" unless strings[s]?
-        
     for string, translation of strings
       delete strings[string] unless devStrings[string]
-    
     fs.writeFileSync(filePath, JSON.stringify(strings, null, "\t"), 'utf8')
-    debug "updated strings in #{file}"
 
 
 module.exports = I18n
