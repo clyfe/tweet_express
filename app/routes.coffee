@@ -11,16 +11,9 @@ module.exports = ->
   # Can use controller actions callbacks
   @get '/tweets', to 'tweets#index'
   @post '/tweets', to controller: 'tweets', action: 'create'
-
-  # Can use REST routing via express-resource
-  @resource 'users'
-  
-  # A scaffold controller
-  @resource 'tags'
   
   # Namespaces
   @namespace '/admin', ->
-    @get '/hi', to ->
-      @title = "Hello from namespace!"
-      @render 'index'
-
+    # Can use REST routing via express-resource
+    # Users controller also uses scaffold
+    @resource 'users'

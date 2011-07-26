@@ -1,4 +1,4 @@
-p -> 'Hello REST'
+p -> 'Hello Namespaces, REST routing & Scaffolding'
 
 for user in @users
   p -> user.name
