@@ -35,6 +35,12 @@ class Controller
   @forward 'req', 'param', 'app', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
+  # a nifty introspection thingie to return the controller name
+  #
+  # @api public
+  @controllerName: -> 
+    @_controllerName ?= @toString().match(/function ([^\(]+)/)[1].toLowerCase()
+  
   # Creates a context instance, populated with req, res, next
   #
   # @req {Object} the router-provided Express req object
@@ -53,8 +59,9 @@ class Controller
   # @api public
   @::__defineSetter__ 'err', (err) -> throw err if err
   
-  # Renders a template via Express's res#render, 
-  # only it does so by providing the locals to the current context.
+  # Renders a template via Express's res#render, with the following additions:
+  # * providing the locals to the current (controller instance) context
+  # * searches for a template in ViewsRoot/ControllerName/* first, with fallbacks to ViewsRoot/ etc.
   #
   #     # app.coffee
   #     @get '/', to ->
@@ -68,8 +75,22 @@ class Controller
   # @fn {Object} optional callback, see Express.Response#render
   # @api public
   render: (template, fn) ->
-    @[k] = v for k, v of @res._locals # Express api compatibility
-    @res.render template, @, fn
+    
+    # Express api compatibility, just to make sure
+    @[k] = v for k, v of @res._locals
+    
+    # custom controller, try to scope under it's name
+    defaultViews = @res.app.set 'views'
+    @layout = "#{defaultViews}/layouts/application" unless @layout?
+    return @res.render(template, @, fn) if @constructor == Controller
+    
+    try
+      @res.app.set 'views', "#{defaultViews}/#{@constructor.controllerName()}"
+      @res.render template, @, fn, null, true
+      @res.app.set 'views', defaultViews
+    catch e # TODO: limit template not found
+      @res.app.set 'views', defaultViews
+      @res.render template, @, fn
   
   # Adnotation helper for action definitions.
   # Serves to differentiate between controller actions and regullar (private) methods.

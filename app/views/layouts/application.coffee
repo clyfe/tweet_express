@@ -10,11 +10,7 @@ html ->
     text ' | '
     a href: "/tweets", -> 'Tweets'
     text ' | '
-    a href: "/users", -> 'Users'
-    text ' | '
-    a href: "/tags", -> 'Tags'
-    text ' | '
-    a href: "/admin/hi", -> 'Hi'
+    a href: "/admin/users", -> 'Users'
     
     div -> @flashes()
     div -> @body

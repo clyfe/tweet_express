@@ -10,7 +10,7 @@ class Tweets extends Controller
   #   logger.info request
   
   @action index: ->
-    Tweet.find (@err, @tweets) => @render 'tweets/index'
+    Tweet.find (@err, @tweets) => @render 'index'
     
   @action create: ->
     @tweet = new Tweet @param 'tweet'
