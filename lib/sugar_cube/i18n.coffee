@@ -62,7 +62,9 @@ translate = (str, params) ->
   language.translate(str, params)
 
 
-I18n.helpers = __: translate
+I18n.helpers =
+  translate: translate
+  t: translate
 
 
 # TODO: parse views for __

@@ -1,4 +1,4 @@
 p -> @title
 div -> 
-  p 'translation: ' + @__ 'test'
+  p 'translation: ' + @t 'test', param: 'parametro'
 
