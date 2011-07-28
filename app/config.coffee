@@ -1,7 +1,6 @@
 express = require 'express'
 coffeekup = require 'coffeekup'
-i18n = require 'sugar_cube/i18n'
-
+I18n = require 'sugar_cube/i18n'
 
 module.exports = ->
 
@@ -13,9 +12,8 @@ module.exports = ->
     @use express.session(secret: "0123456789")
     @use express.bodyParser()
     @use express.methodOverride()
-    
-    @use i18n(path: '/app/locales', views: '/app/views')
-    @helpers(__: i18n.translate, n: i18n.plural, languages: i18n.languages)
+    @use I18n.middleware
+    @helpers I18n.helpers
 		
     @use @router
     @use express.static(__dirname + '/../public')
