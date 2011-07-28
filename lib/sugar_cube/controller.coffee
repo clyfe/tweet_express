@@ -1,5 +1,5 @@
 metaCode = require 'meta_code'
-{Set} = require 'sc_support/data_structures'
+{Set} = require 'sugar_cube/data_structures'
 
 
 # A controller class that can be used:
