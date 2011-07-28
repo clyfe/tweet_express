@@ -73,7 +73,7 @@ h1 -> @title
 ```
 
 ```html
-<!-- views/tweets/index.coffee -->
+# views/tweets/index.coffee
 
 h1 -> 'Express'
 
