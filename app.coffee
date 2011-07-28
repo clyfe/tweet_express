@@ -14,7 +14,7 @@ app = express.createServer()
 
 require('config').call app
 mongoose.connect app.set('mongoose url')
-I18n.load path: '/app/locales', views: '/app/views'
+I18n.load path: '/app/locales'
 
 require('routes').call app
 app.helpers require('sugar_cube/helpers')
