@@ -68,7 +68,7 @@ module.exports = Tweets
 #### Views example
 
 ```coffeescript
-<!-- views/index.coffee -->
+# views/index.coffee
 h1 -> @title
 ```
 

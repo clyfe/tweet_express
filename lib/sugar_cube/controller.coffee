@@ -79,11 +79,11 @@ class Controller
     # Express api compatibility, just to make sure
     @[k] = v for k, v of @res._locals
     
-    # custom controller, try to scope under it's name
     defaultViews = @res.app.set 'views'
     @layout = "#{defaultViews}/layouts/application" unless @layout?
     return @res.render(template, @, fn) if @constructor == Controller
     
+    # custom controller, try to scope under it's name
     try
       @res.app.set 'views', "#{defaultViews}/#{@constructor.controllerName()}"
       @res.render template, @, fn, null, true
