@@ -69,10 +69,11 @@ module.exports = Tweets
 
 ```coffeescript
 # views/index.coffee
+
 h1 -> @title
 ```
 
-```html
+```coffeescript
 # views/tweets/index.coffee
 
 h1 -> 'Express'
