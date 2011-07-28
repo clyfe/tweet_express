@@ -18,6 +18,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 #### Routing example
 
 ```coffeescript
+# app/routes.coffee
 {to} = require 'sugar_cube/router_dsl'
 
 
@@ -69,13 +70,11 @@ module.exports = Tweets
 
 ```coffeescript
 # views/index.coffee
-
 h1 -> @title
 ```
 
 ```coffeescript
 # views/tweets/index.coffee
-
 h1 -> 'Express'
 
 for tweet in @tweets
