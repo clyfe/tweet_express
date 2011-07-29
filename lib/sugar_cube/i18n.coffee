@@ -1,5 +1,4 @@
 # TODO: ISO lang-COUNTRY, consider country etc
-# TODO: docs
 
 
 path = require 'path'
@@ -9,9 +8,9 @@ Language = lingo.Language
 CSON = require 'cson'
 async = require 'async'
 
+
 # I18n utilities that build on lingo module
 #
-# @fn {Function} function to be made available as a helper
 # @api public
 I18n =
   options:
@@ -19,6 +18,12 @@ I18n =
     path: '/lang'
 
 
+# Load translation dictionaries from `I18n.options.path`
+#
+#     I18n.load default: 'es', path: __dirname + '/langs'
+#
+# @param {Object} opts - options to set as default
+# @api public
 I18n.load = (opts) ->
   if opts?
     I18n.options[k] = v for own k, v of opts
@@ -40,7 +45,10 @@ I18n.load = (opts) ->
     new Language(I18n.options.default) unless lingo[I18n.options.default] # ensure default language existence
 
 
-# sets users language
+
+# Middleware to set the user language from `Accept-Language` header, unless it exists
+#
+# @api public
 I18n.middleware = (req, res, next) ->
     return next() if req.session?.lang?
   
@@ -59,20 +67,26 @@ I18n.middleware = (req, res, next) ->
     next()
 
 
-# where the real thing happens
+# Translates a string and iterpolates params, according to dictionaries
+#
+#     # en.cson
+#     hello_user: "Hello {username}"
+#
+#     # some_view.coffee
+#     @t 'hello_user', username: 'Paul'
+#
+# @param {Object} opts - options to set as default
+# @api public
 translate = (str, params) -> 
   lang = @session?.lang or I18n.options.default
   language = lingo[lang]
   language.translate(str, params)
 
 
+# Helpers for translation
 I18n.helpers =
   translate: translate
   t: translate
-
-
-# TODO: parse views for @t
-# I18n.updateStrings
 
 
 module.exports = I18n
