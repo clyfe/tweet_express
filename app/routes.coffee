@@ -15,5 +15,5 @@ module.exports = ->
   # Namespaces
   @namespace '/admin', ->
     # Can use REST routing via express-resource
-    # Users controller also uses scaffold
+    # Users controller also uses scaffold in this example
     @resource 'users'

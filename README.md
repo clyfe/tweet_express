@@ -11,6 +11,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 * nice MVC structure inspired by Rails
 * flexible conventions
 * base application skeleton
+* CoffeeScript all the way down (CSON for language translations, CoffeeKup for views)
 
 
 ### Examples
