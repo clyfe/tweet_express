@@ -1,6 +1,0 @@
-<p>Hello Scaffold</p>
-
-<% for record in @records: %>
-  </p><%= record %></p>
-<% end %>
-

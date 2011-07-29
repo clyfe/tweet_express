@@ -8,6 +8,7 @@ module.exports = ->
     @set 'views', __dirname + '/views'
     @register '.coffee', coffeekup
     @set 'view engine', 'coffee'
+    @set 'hints', false # mostly annoying
     @use express.cookieParser()
     @use express.session(secret: "0123456789")
     @use express.bodyParser()

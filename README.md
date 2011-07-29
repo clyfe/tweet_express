@@ -80,7 +80,7 @@ h1 -> 'Express'
 for tweet in @tweets
   p -> tweet.body
 
-form action: "/tweet", method: "post" ->
+form action: "/tweet", method: "post", ->
   input type: "text", name: "tweet[body]"
   input type: "submit"
 ```
@@ -101,6 +101,10 @@ Look at the code in the `lib/` folder to see the code making these posible, it's
 ### Debug
 
 See [node-inspector](https://github.com/dannycoates/node-inspector)
+
+```shell
+coffee --nodejs --debug app.coffee
+```
 
 
 ### File structure

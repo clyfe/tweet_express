@@ -1,6 +1,6 @@
 metaCode = require 'meta_code'
 {Set} = require 'sugar_cube/data_structures'
-
+{View} = require 'express'
 
 # A controller class that can be used:
 # 1. as context in wich router functions are executed
@@ -35,11 +35,13 @@ class Controller
   @forward 'req', 'param', 'app', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
+  
   # a nifty introspection thingie to return the controller name
   #
   # @api public
   @controllerName: -> 
     @_controllerName ?= @toString().match(/function ([^\(]+)/)[1].toLowerCase()
+  
   
   # Creates a context instance, populated with req, res, next
   #
@@ -48,7 +50,12 @@ class Controller
   # @next {Function} next - the in-router-provided next middleware, (error catcher etc.)
   # @api public
   constructor: (@req, @res, @next) ->
-    this.session = @req.session
+    @session = @req.session
+    
+    # default layout
+    defaultViews = @res.app.set 'views'
+    @layout = "#{defaultViews}/layouts/application"
+  
   
   # A smart way to handle errors.
   #
@@ -58,6 +65,7 @@ class Controller
   # @param {Object} err - the error to be forwarded to next
   # @api public
   @::__defineSetter__ 'err', (err) -> throw err if err
+  
   
   # Renders a template via Express's res#render, with the following additions:
   # * providing the locals to the current (controller instance) context
@@ -75,23 +83,28 @@ class Controller
   # @param {Object} fn - optional callback, see Express.Response#render
   # @api public
   render: (template, fn) ->
-    
+
     # Express api compatibility, just to make sure
     @[k] = v for k, v of @res._locals
-    
+
     defaultViews = @res.app.set 'views'
-    @layout = "#{defaultViews}/layouts/application" unless @layout?
+    render_with_views_path = (path) =>
+      try
+        @res.app.set 'views', path
+        @res.render template, @, fn, null, true
+      finally
+        @res.app.set 'views', defaultViews
+
     return @res.render(template, @, fn) if @constructor == Controller
-    
-    # custom controller, try to scope under it's name
-    try
-      @res.app.set 'views', "#{defaultViews}/#{@constructor.controllerName()}"
-      @res.render template, @, fn, null, true
-      @res.app.set 'views', defaultViews
-    catch e # TODO: limit template not found
-      @res.app.set 'views', defaultViews
+
+    try # custom controller, try to scope under it's name
+      render_with_views_path "#{defaultViews}/#{@constructor.controllerName()}"
+    catch e
+      throw e unless e.view instanceof View # e is a "Template not found" error
       @res.render template, @, fn
-  
+        
+
+    
   # Adnotation helper for action definitions.
   # Serves to differentiate between controller actions and regullar (private) methods.
   #   
@@ -110,6 +123,7 @@ class Controller
     for k, v of action
       @actions.push k
       @::[k] = v
+  
   
   # Returns a Connect conforming callback function, that runs on the calling controller's instances.
   #
@@ -136,6 +150,7 @@ class Controller
       else
         throw new Error("unknown action #{cb}, only functions and strings valid actions")
           
+          
   # Returns a express-resources conforming object, with the required actions
   #
   #     class Users extends Controller
@@ -150,6 +165,7 @@ class Controller
     rest = {}
     rest[action] = @toMiddleware(action) for action in @actions
     rest
+
 
   # Wraps a middleware in an error catching middlware that forwards any thrown errors to next()
   #
