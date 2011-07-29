@@ -17,12 +17,13 @@ class MiddlewareDefinition
   
   # Create a MiddlewareDefinition from a function/string/object
   #
-  # @cb {Function|String|Object} the router callback function or controller-defining string/object
+  # @param {Function|String|Object} cb - the router callback function or controller-defining string/object
   # @api public
   constructor: (@cb) ->
   
   # Returns a Connect middleware for this definition
   #
+  # @return {Function} a Connect middleware (that resolves to the specified Controller)
   # @api public
   toMiddleware: ->
     switch typeof @cb
@@ -39,8 +40,9 @@ class MiddlewareDefinition
   
   # Validates the existence of controller and returns the resolved middleware
   # 
-  # @controller {String} the controller name
-  # @action {String} the controller action (or skip if rest)
+  # @param {String} controller - the controller name
+  # @param {String} action - the controller action (or skip if rest)
+  # @return {Function} a Connect middleware (that resolves to the given controller and action)
   # @api public
   @resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
@@ -50,7 +52,8 @@ class MiddlewareDefinition
     
   # Requires the given controller based on the controllersPath configuration
   #
-  # @controller {String} the controller name
+  # @param {String} controller - the controller name
+  # @return {Object} the controller class
   # @api public
   @findController: (controller) ->
     require "#{@controllersPath}/#{controller}"
@@ -76,8 +79,9 @@ class MiddlewareDefinition
 #     @get '/', to 'tweets#index'
 #     @get '/create', to controller: 'tweets', action: 'create'
 #
-#@cb {Function|String|Object} the router callback function or controller-defining string/object
-#@api public
+# @param {Function|String|Object} cb - the router callback function or controller-defining string/object
+# @return {Function} a Connect middleware (resolved to the given specification)
+# @api public
 to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, module
 
 
@@ -89,7 +93,7 @@ to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, modu
 #
 #     @resource 'users'
 #
-#@name {string} the controller name
+#@param {String} name - the controller name
 #@api public
 resource = express.HTTPServer.prototype.resource
 express.HTTPServer.prototype.resource =

@@ -1,4 +1,5 @@
 # TODO: ISO lang-COUNTRY, consider country etc
+# TODO: docs
 
 
 path = require 'path'
@@ -8,7 +9,10 @@ Language = lingo.Language
 CSON = require 'cson'
 async = require 'async'
 
-
+# I18n utilities that build on lingo module
+#
+# @fn {Function} function to be made available as a helper
+# @api public
 I18n =
   options:
     default: 'en'
@@ -32,7 +36,7 @@ I18n.load = (opts) ->
       language = new Language(lang.toLowerCase())
       language.translations = data
   async.forEach files, loader, (err) ->
-    throw err if err?
+    throw err if err
     new Language(I18n.options.default) unless lingo[I18n.options.default] # ensure default language existence
 
 
@@ -67,7 +71,7 @@ I18n.helpers =
   t: translate
 
 
-# TODO: parse views for __
+# TODO: parse views for @t
 # I18n.updateStrings
 
 

@@ -12,7 +12,8 @@ coffeekup = require 'coffeekup'
 #     # view.coffee
 #     div -> @flashes()
 # 
-# @fn {Function} function to be made available as a helper
+# @param {Function} fn - function to be made available as a helper
+# @return {Function) a function that can be used as a helper in CoffeeKup views
 # @api public
 exports.helper = (fn) ->
   -> coffeekup.compile(fn)(@)

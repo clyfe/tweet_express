@@ -43,9 +43,9 @@ class Controller
   
   # Creates a context instance, populated with req, res, next
   #
-  # @req {Object} the router-provided Express req object
-  # @req {Object} the router-provided Express res object
-  # @next {Object} the in-router-provided next middleware, (error catcher etc.)
+  # @param {Object} req - the router-provided Express req object
+  # @param {Object} res - the router-provided Express res object
+  # @next {Function} next - the in-router-provided next middleware, (error catcher etc.)
   # @api public
   constructor: (@req, @res, @next) ->
     this.session = @req.session
@@ -55,7 +55,7 @@ class Controller
   #     @get '/', to ->
   #       Tweet.find (@err, @tweets) => @render 'index'
   #  
-  # @err {Object} the error to be forwarded to next
+  # @param {Object} err - the error to be forwarded to next
   # @api public
   @::__defineSetter__ 'err', (err) -> throw err if err
   
@@ -71,8 +71,8 @@ class Controller
   #     # index.coffee
   #     h1 -> @title
   #
-  # @template {Object} template name/path (index, index.eco etc.)
-  # @fn {Object} optional callback, see Express.Response#render
+  # @param {Object} template - template name/path (index, index.eco etc.)
+  # @param {Object} fn - optional callback, see Express.Response#render
   # @api public
   render: (template, fn) ->
     
@@ -103,7 +103,7 @@ class Controller
   #         req = new Request req: @req
   #         req.save (@err) => console.log 'req logged'
   # 
-  # @action {Object} the router-provided Express req object
+  # @param {Object} action - the router-provided Express req object
   # @api public
   @action: (action) ->
     @actions = new Set() unless @hasOwnProperty 'actions'
@@ -123,7 +123,8 @@ class Controller
   #     # uses Sessions controller as execution context for the callback function
   #     @get '/login', Sessions.to_middleware -> @render 'login_form'
   # 
-  # @action {Object}  the router callback function or action-defining string
+  # @param {Object} action - the router callback function or action-defining string
+  # @return {Function} a Connect middleware
   # @api public
   @toMiddleware: (action) ->
     switch typeof action
@@ -143,6 +144,7 @@ class Controller
   # 
   #     Users.toRestMiddlewares() == {index: -> @render 'index', ...}
   # 
+  # @return {Object} an object of Connect middlewares
   # @api public
   @toRestMiddlewares: ->
     rest = {}
@@ -151,6 +153,8 @@ class Controller
 
   # Wraps a middleware in an error catching middlware that forwards any thrown errors to next()
   #
+  # @param {Function} fn - a Connect middleware
+  # @return {Function} a Connect middleware
   # @api private
   @wrapErrorsMiddleware: (fn) ->
     (req, res, next) ->
