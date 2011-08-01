@@ -91,15 +91,14 @@ to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, modu
 #       @action index: -> @render 'index'
 #       ...
 #
-#     @resource 'users'
+#     @resourceTo 'users'
 #
 #@param {String} name - the controller name
 #@api public
-resource = express.HTTPServer.prototype.resource
-express.HTTPServer.prototype.resource =
-express.HTTPSServer.prototype.resource = (name) -> # TODO: collection, member
+express.HTTPServer.prototype.resourceTo =
+express.HTTPSServer.prototype.resourceTo = (name) -> # TODO: collection, member
   controller = MiddlewareDefinition.findController name
-  resource.call @, name, controller.toRestMiddlewares()
+  @resource name, controller.toRestMiddlewares()
 
 
 exports.MiddlewareDefinition = MiddlewareDefinition
