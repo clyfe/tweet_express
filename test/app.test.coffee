@@ -23,7 +23,7 @@ module.exports =
       headers: {'Content-Type': 'text/html; charset=utf-8'}
     ,
       (res) -> 
-        assert.includes res.body, '<p>Hello from route function!</p>'
+        assert.includes res.body, '<p>Hello route function!</p>'
         doneTracker.emit 'testDone'
 
 

@@ -1,4 +1,7 @@
 express = require 'express'
+toArray = require('express/lib/utils').toArray
+router = require 'express/lib/router'
+methods = router.methods.concat('del', 'all')
 Controller = require 'sugar_cube/controller'
 
 
@@ -59,30 +62,31 @@ class MiddlewareDefinition
     require "#{@controllersPath}/#{controller}"
 
 
-# Returns a function that conforms to Express router api, that wraps the provided "cb" function or controller.
-# If "cb" is a function, it is executed in a Context object instance, at req time.
-# If it's a controller it is executed in the controller object.
+# Monkey patch server routing functions to autoload controller actions
+# Old versions still work
 #
-# Route function callback example:
+#     class Users extends Controller
+#       @action index: -> @render 'index'
+#       ...
 #
-#     # routes.coffee
-#     @get '/', to ->
-#       @title = 'Express'
-#       @render 'index'
+#     @get '/users', to: 'users#index'
 #
-#     # index.coffee
-#     h1 -> @title 
-#
-# Controller callback example:
-#
-#     # routes.coffee
-#     @get '/', to 'tweets#index'
-#     @get '/create', to controller: 'tweets', action: 'create'
-#
-# @param {Function|String|Object} cb - the router callback function or controller-defining string/object
-# @return {Function} a Connect middleware (resolved to the given specification)
-# @api public
-to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, module
+#@param {String} name - the controller name
+#@api public
+app = express.HTTPServer::
+methods.forEach (method) ->
+  old = app[method]
+  app[method] = (path) ->
+    return old.apply(@, arguments) if 1 == arguments.length # just like old api
+    cb = arguments[1]
+    switch typeof cb
+      when 'function' # just like old api
+        old.apply(@, arguments)
+      when 'object' # this is where we come in
+        args = [method].concat toArray(arguments)
+        args[2] = new MiddlewareDefinition(cb['to']).toMiddleware()
+        @use(this.router) if !@.__usedRouter
+        @routes._route.apply @routes, args
 
 
 # Monkey patch express-resource #route to autoload rest controller actions
@@ -91,16 +95,19 @@ to = (cb) -> new MiddlewareDefinition(cb).toMiddleware() # TODO: namespace, modu
 #       @action index: -> @render 'index'
 #       ...
 #
-#     @resourceTo 'users'
+#     @resource 'users'
 #
 #@param {String} name - the controller name
 #@api public
-express.HTTPServer.prototype.resourceTo =
-express.HTTPSServer.prototype.resourceTo = (name) -> # TODO: collection, member
-  controller = MiddlewareDefinition.findController name
-  @resource name, controller.toRestMiddlewares()
+resource = express.HTTPServer::resource
+express.HTTPServer::resource =
+express.HTTPSServer::resource = (name) -> # TODO: collection, member
+  if 1 == arguments.length
+    controller = MiddlewareDefinition.findController name
+    resource.call @, name, controller.toRestMiddlewares()
+  else
+    resource.apply @, arguments
 
 
 exports.MiddlewareDefinition = MiddlewareDefinition
-exports.to = to
 
