@@ -1,7 +1,7 @@
 scaffoldViews = __dirname + '/views'
 {View} = require 'express'
 
-
+# TODO: write me
 # The scaffold macro
 #  
 #     class Tweets extends Controller

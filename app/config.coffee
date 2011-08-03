@@ -23,7 +23,6 @@ module.exports = ->
   # Per environment configuration
 
   @configure 'development', ->
-    # i18n.updateStrings() # buggy, and also we prefer t to __
     @use express.errorHandler(dumpExceptions: true, showStack: true)
     @set 'mongoose url', 'mongodb://localhost/tweet_express_development'
 
