@@ -1,6 +1,13 @@
 metaCode = require 'meta_code'
-{Set} = require 'sugar_cube/data_structures'
 {View} = require 'express'
+
+
+# A Set is an array with unique elements
+#
+# @api private
+class Set extends Array
+  push: (x) -> super x unless x in @
+
 
 # A controller class that can be used:
 # 1. as context in wich router functions are executed
@@ -28,8 +35,10 @@ metaCode = require 'meta_code'
 # @api public
 class Controller
   
+  
   # use forward metacode helpers
   metaCode @, 'forward'
+
 
   # some sugar to access common methods faster
   @forward 'req', 'param', 'app', 'flash'
@@ -43,6 +52,17 @@ class Controller
     @_controllerName ?= @toString().match(/function ([^\(]+)/)[1].toLowerCase()
   
   
+  # Default layout. This can be configured per controller
+  #
+  #     class Users extends Controller
+  #       @layout: 'users' # ie. views/layouts/users.coffee
+  #
+  # Default value is "application" ie. "views/layouts/application.coffee"
+  #
+  # @api public
+  @layout: 'application'
+  
+  
   # Creates a context instance, populated with req, res, next
   #
   # @param {Object} req - the router-provided Express req object
@@ -52,9 +72,9 @@ class Controller
   constructor: (@req, @res, @next) ->
     @session = @req.session
     
-    # default layout
+    # default layout, this can be changed at action level
     defaultViews = @res.app.set 'views'
-    @layout = "#{defaultViews}/layouts/application"
+    @layout = "#{defaultViews}/layouts/#{@constructor.layout}"
   
   
   # A smart way to handle errors.
@@ -101,8 +121,7 @@ class Controller
       render_with_views_path "#{defaultViews}/#{@constructor.controllerName()}"
     catch e
       throw e unless e.view instanceof View # e is a "Template not found" error
-      @res.render template, @, fn
-        
+      @res.render template, @, fn   
 
     
   # Adnotation helper for action definitions.

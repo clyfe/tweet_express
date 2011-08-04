@@ -10,19 +10,12 @@ Controller = require 'sugar_cube/controller'
 #
 #@api public
 class MiddlewareDefinition
-
-  # Path prefix of controller directories
-  # If controller are in "/app/controllers" and "/app" is in the require path,
-  # then set to "controllers"
-  #
-  # @api public
-  @controllersPath: 'controllers'
   
   # Create a MiddlewareDefinition from a function/string/object
   #
   # @param {Function|String|Object} cb - the router callback function or controller-defining string/object
   # @api public
-  constructor: (@cb) ->
+  constructor: (@app, @cb) ->
   
   # Returns a Connect middleware for this definition
   #
@@ -34,10 +27,10 @@ class MiddlewareDefinition
         Controller.toMiddleware @cb
       when 'string'
         [controller, action] = @cb.split '#'
-        MiddlewareDefinition.resolveMiddleware controller, action
+        @resolveMiddleware controller, action
       when 'object'
         {controller, action} = @cb
-        MiddlewareDefinition.resolveMiddleware controller, action
+        @resolveMiddleware controller, action
       else
         throw new Error("unknown route endpoint #{@cb}")
   
@@ -47,19 +40,21 @@ class MiddlewareDefinition
   # @param {String} action - the controller action (or skip if rest)
   # @return {Function} a Connect middleware (that resolves to the given controller and action)
   # @api public
-  @resolveMiddleware: (controller, action) ->
+  resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
-    controller = @findController controller
+    controller = MiddlewareDefinition.findController @app, controller
     action = 'index' unless action?
     controller.toMiddleware action
     
   # Requires the given controller based on the controllersPath configuration
   #
+  # @param {Object} app - the configured Express server
   # @param {String} controller - the controller name
   # @return {Object} the controller class
   # @api public
-  @findController: (controller) ->
-    require "#{@controllersPath}/#{controller}"
+  @findController: (app, controller) ->
+    controllersPath = app.set 'controllers path'
+    require "#{controllersPath}/#{controller}"
 
 
 # Monkey patch server routing functions to autoload controller actions
@@ -84,7 +79,7 @@ methods.forEach (method) ->
         old.apply(@, arguments)
       when 'object' # this is where we come in
         args = [method].concat toArray(arguments)
-        args[2] = new MiddlewareDefinition(cb['to']).toMiddleware()
+        args[2] = new MiddlewareDefinition(@, cb['to']).toMiddleware()
         @use(this.router) if !@.__usedRouter
         @routes._route.apply @routes, args
 
@@ -97,13 +92,13 @@ methods.forEach (method) ->
 #
 #     @resource 'users'
 #
-#@param {String} name - the controller name
+#@param {String|Object} name - the controller name
 #@api public
 resource = express.HTTPServer::resource
 express.HTTPServer::resource =
 express.HTTPSServer::resource = (name) -> # TODO: collection, member
   if 1 == arguments.length
-    controller = MiddlewareDefinition.findController name
+    controller = MiddlewareDefinition.findController @, name
     resource.call @, name, controller.toRestMiddlewares()
   else
     resource.apply @, arguments

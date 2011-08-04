@@ -8,7 +8,7 @@ require.paths.unshift path.join(__dirname, 'app')
 require.paths.unshift path.join(__dirname, 'lib')
 
 I18n = require 'sugar_cube/i18n'
-require 'sugar_cube/router_dsl'
+require 'sugar_cube/router'
 require 'sc_scaffold'
 
 app = express.createServer()

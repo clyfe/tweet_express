@@ -1,12 +1,15 @@
 express = require 'express'
 coffeekup = require 'coffeekup'
+browserify = require 'browserify'
 I18n = require 'sugar_cube/i18n'
+
 
 module.exports = ->
 
   @configure ->
     @set 'views', __dirname + '/views'
     @register '.coffee', coffeekup
+    @set 'controllers path', 'controllers'
     @set 'view engine', 'coffee'
     @set 'hints', false # mostly annoying
     @use express.cookieParser()
@@ -16,6 +19,11 @@ module.exports = ->
     @use I18n.middleware
     @helpers I18n.helpers
 		
+    @use browserify
+      mount: '/browserify.js'
+      require: ['underscore', 'jquery-browserify']
+      entry: "#{__dirname}/client/entry.coffee"
+    
     @use @router
     @use express.static(__dirname + '/../public')
     
