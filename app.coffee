@@ -7,15 +7,14 @@ mongoose = require 'mongoose'
 require.paths.unshift path.join(__dirname, 'app')
 require.paths.unshift path.join(__dirname, 'lib')
 
-I18n = require 'sugar_cube/i18n'
-require 'sugar_cube/router'
+sugarCube = require 'sugar_cube'
 require 'sc_scaffold'
 
-app = express.createServer()
+app = sugarCube.createServer()
 
 require('config').call app
 mongoose.connect app.set('mongoose url')
-I18n.load path: '/app/locales'
+sugarCube.I18n.load path: '/app/locales'
 
 require('routes').call app
 app.helpers require('sugar_cube/helpers')
