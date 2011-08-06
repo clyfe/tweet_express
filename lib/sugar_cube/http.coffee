@@ -6,16 +6,17 @@ Controller = require './controller'
 HTTPServer = require './http'
 
 
+# A server smarter than the Express one
 class HTTPServer extends express.HTTPServer
-  
-  
-  # Monkey patch init to create paths property on router
-  init: (middleware) ->
-    super middleware
+
+
+  # Override init to create paths property on router
+  init: ->
+    super
     @router.paths = {}
-  
-  
-  # Returns a Connect middleware for this definition
+
+
+  # Returns a Connect middleware, given a route definition
   #
   # @param {Function|String|Object} to - the middleware definition
   # @return {Function} a Connect middleware (that resolves to the specified Controller)
@@ -68,8 +69,8 @@ class HTTPServer extends express.HTTPServer
   #
   #@param {String} name - the controller name
   #@api public
-  methods.forEach (method) =>
-    @::[method] = (path) ->
+  methods.forEach (method) ->
+    HTTPServer::[method] = (path) ->
       return express.HTTPServer::[method].apply(@, arguments) if arguments.length == 1 # just like old api
       cb = arguments[1]
       switch typeof cb
@@ -94,9 +95,11 @@ class HTTPServer extends express.HTTPServer
   #@api public
   resource: (name) -> # TODO: collection, member
     return super unless arguments.length == 1
-    super name, @findController(name).toRestMiddlewares()  
-
-
+    super name, @findController(name).toRestMiddlewares()
+  
+  #
+  urlFor: (opts) ->
+    {method, controller, action} = opts
 
 module.exports = HTTPServer
 

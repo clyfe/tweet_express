@@ -6,7 +6,7 @@ module.exports = ->
     @render 'index'
 
   # Can use controller actions callbacks
-  @get '/tweets', to: 'tweets#index'
+  @get '/tweets', to: 'tweets#index', as: 'tweets'
   @post '/tweets', to: {controller: 'tweets', action: 'create'}
   
   # Namespaces
