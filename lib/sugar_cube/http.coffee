@@ -2,9 +2,8 @@ express = require 'express'
 {toArray} = require 'express/lib/utils'
 router = require 'express/lib/router'
 methods = router.methods.concat('del', 'all')
-Controller = require './controller'
 HTTPServer = require './http'
-
+{DefinitionResolver} = require './router'
 
 # A server smarter than the Express one
 class HTTPServer extends express.HTTPServer
@@ -14,49 +13,8 @@ class HTTPServer extends express.HTTPServer
   init: ->
     super
     @router.paths = {}
-
-
-  # Returns a Connect middleware, given a route definition
-  #
-  # @param {Function|String|Object} to - the middleware definition
-  # @return {Function} a Connect middleware (that resolves to the specified Controller)
-  # @api public
-  buildMiddleware: (to) ->
-    switch typeof to
-      when 'function'
-        Controller.toMiddleware to
-      when 'string'
-        [controller, action] = to.split '#'
-        @resolveMiddleware controller, action
-      when 'object'
-        {controller, action} = to
-        @resolveMiddleware controller, action
-      else
-        throw new Error("unknown route endpoint #{to}")
-
-
-  # Validates the existence of controller and returns the resolved middleware
-  # 
-  # @param {String} controller - the controller name
-  # @param {String} action - the controller action (or skip if rest)
-  # @return {Function} a Connect middleware (that resolves to the given controller and action)
-  # @api public
-  resolveMiddleware: (controller, action) ->
-    throw new Error("cannot resolve controller") unless controller?
-    action = 'index' unless action?
-    @findController(controller).toMiddleware action
-
-
-  # Requires the given controller based on the "controllers path" configuration
-  #
-  # @param {String} controller - the controller name
-  # @return {Object} the controller class
-  # @api public
-  findController: (controller) ->
-    controllersPath = @set 'controllers path'
-    raise new Error("please configure controllers path") unless controllersPath?
-    require "#{controllersPath}/#{controller}"
-
+    @definitionResolver = new DefinitionResolver @
+  
 
   # Override server routing functions to autoload controller actions
   # Old versions still work
@@ -78,7 +36,7 @@ class HTTPServer extends express.HTTPServer
           express.HTTPServer::[method].apply(@, arguments)
         when 'object' # this is where we come in
           args = [method].concat toArray(arguments)
-          args[2] = @buildMiddleware cb['to']
+          args[2] = @definitionResolver.toMiddleware cb['to']
           @use(this.router) if !@.__usedRouter
           @routes._route.apply @routes, args
 
@@ -95,7 +53,7 @@ class HTTPServer extends express.HTTPServer
   #@api public
   resource: (name) -> # TODO: collection, member
     return super unless arguments.length == 1
-    super name, @findController(name).toRestMiddlewares()
+    super name, @definitionResolver.findController(name).toRestMiddlewares()
   
   #
   urlFor: (opts) ->
