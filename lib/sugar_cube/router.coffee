@@ -97,6 +97,5 @@ class Router extends ExpressRouter
     {method, controller, action} = opts
     
 
-exports.DefinitionResolver = DefinitionResolver
-exports.Router = Router
+module.exports = Router
 

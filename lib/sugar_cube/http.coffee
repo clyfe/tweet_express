@@ -3,7 +3,7 @@ express = require 'express'
 router = require 'express/lib/router'
 methods = router.methods.concat('del', 'all')
 HTTPServer = require './http'
-{DefinitionResolver, Router} = require './router'
+Router = require './router'
 
 
 # A server smarter than the Express one
