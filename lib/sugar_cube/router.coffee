@@ -77,6 +77,7 @@ class Router extends ExpressRouter
   # @return {Router} for chaining
   # @api private
   _route: (method, path) ->
+    super if arguments.length < 3
     cb = arguments[arguments.length - 1]
     switch typeof cb
       when 'object' # this is where we come in
