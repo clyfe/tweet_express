@@ -1,8 +1,4 @@
 express = require 'express'
-{toArray} = require 'express/lib/utils'
-router = require 'express/lib/router'
-methods = router.methods.concat('del', 'all')
-HTTPServer = require './http'
 Router = require './router'
 
 
