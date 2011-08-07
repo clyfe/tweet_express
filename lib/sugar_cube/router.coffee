@@ -68,20 +68,22 @@ class Router extends ExpressRouter
 
 
   # Route `method`, `path`, and optional middleware
-  # to the callback `fn`.
+  # to the callback defined by `cb`.
   # 
   # @param {String} method
   # @param {String} path
   # @param {Function} ...
-  # @param {Function|String|object} cb - connect middleware or middleware definition as defined by `DefinitionResolver` class
+  # @param {Function|String|Object} cb - connect middlewares or middleware definition as defined by `DefinitionResolver` class
   # @return {Router} for chaining
   # @api private
-  _route: (method, path, cb) ->
+  _route: (method, path) ->
+    cb = arguments[arguments.length - 1]
     switch typeof cb
-      when 'function' then super # just like old api
       when 'object' # this is where we come in
         fn = @definitionResolver.toMiddleware cb['to']
         super(method, path, fn)
+      else # just like old api
+        super
         
         
   # X
