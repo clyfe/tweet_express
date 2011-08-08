@@ -45,7 +45,7 @@ class Controller
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
   
-  # a nifty introspection thingie to return the controller name
+  # A nifty introspection thingie to return the controller name
   #
   # @api public
   @controllerName: -> 
@@ -77,7 +77,8 @@ class Controller
     @layout = "#{defaultViews}/layouts/#{@constructor.layout}"
   
   
-  # A smart way to handle errors.
+  # A smart way to handle errors. When the `@err` property is setted,
+  # the error is automatically thrown
   #
   #     @get '/', to ->
   #       Tweet.find (@err, @tweets) => @render 'index'
@@ -170,17 +171,18 @@ class Controller
         throw new Error("unknown action #{cb}, only functions and strings valid actions")
           
           
-  # Returns a express-resources conforming object, with the required actions
+  # Extracts all the middlewares from this controller into a hash (js object)
+  # Used as sugar paired with express-resources
   #
   #     class Users extends Controller
   #       @action index: -> @render 'index'
   #       ...
   # 
-  #     Users.toRestMiddlewares() == {index: -> @render 'index', ...}
+  #     Users.toMiddlewares() == {index: -> @render 'index', ...}
   # 
   # @return {Object} an object of Connect middlewares
   # @api public
-  @toRestMiddlewares: ->
+  @toMiddlewares: ->
     rest = {}
     rest[action] = @toMiddleware(action) for action in @actions
     rest
