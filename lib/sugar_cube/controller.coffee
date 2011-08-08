@@ -155,12 +155,12 @@ class Controller
   #     @get '/users', Users.to_middleware 'index' # executes index action
   #     
   #     # uses Sessions controller as execution context for the callback function
-  #     @get '/login', Sessions.to_middleware -> @render 'login_form'
+  #     @get '/login', Sessions.middleware -> @render 'login_form'
   # 
   # @param {Object} action - the router callback function or action-defining string
   # @return {Function} a Connect middleware
   # @api public
-  @toMiddleware: (action) ->
+  @middleware: (action) ->
     switch typeof action
       when 'function'
         @wrapErrorsMiddleware (req, res, next) => action.call new @(req, res, next)
@@ -178,13 +178,13 @@ class Controller
   #       @action index: -> @render 'index'
   #       ...
   # 
-  #     Users.toMiddlewares() == {index: -> @render 'index', ...}
+  #     Users.middlewares() == {index: -> @render 'index', ...}
   # 
   # @return {Object} an object of Connect middlewares
   # @api public
-  @toMiddlewares: ->
+  @middlewares: ->
     rest = {}
-    rest[action] = @toMiddleware(action) for action in @actions
+    rest[action] = @middleware(action) for action in @actions
     rest
 
 

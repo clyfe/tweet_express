@@ -20,10 +20,10 @@ class DefinitionResolver
   # @param {Function|String|Object} to - the middleware definition
   # @return {Function} a Connect middleware (that resolves to the specified Controller)
   # @api public
-  toMiddleware: (to) ->
+  middleware: (to) ->
     switch typeof to
       when 'function'
-        Controller.toMiddleware to
+        Controller.middleware to
       when 'string'
         [controller, action] = to.split '#'
         @resolveMiddleware controller, action
@@ -43,7 +43,7 @@ class DefinitionResolver
   resolveMiddleware: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
     action = 'index' unless action?
-    @findController(controller).toMiddleware action
+    @findController(controller).middleware action
 
 
   # Requires the given controller based on the "controllers path" configuration
@@ -81,7 +81,7 @@ class Router extends ExpressRouter
     cb = arguments[arguments.length - 1]
     switch typeof cb
       when 'object' # this is where we come in
-        fn = @definitionResolver.toMiddleware cb['to']
+        fn = @definitionResolver.middleware cb['to']
         super(method, path, fn)
       else # just like old api
         super

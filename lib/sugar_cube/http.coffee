@@ -24,7 +24,7 @@ class HTTPServer extends express.HTTPServer
   #@api public
   resource: (name) -> # TODO: collection, member
     return super unless arguments.length == 1 # just like old api
-    super name, @routes.definitionResolver.findController(name).toMiddlewares()
+    super name, @routes.definitionResolver.findController(name).middlewares()
 
 
 module.exports = HTTPServer
