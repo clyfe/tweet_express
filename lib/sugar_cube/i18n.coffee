@@ -26,7 +26,7 @@ I18n =
 I18n.load = (opts) ->
   @options[k] = v for own k, v of opts if opts?
   
-  throw new Error("path #{options.path} doesn't exist") unless path.existsSync(process.cwd() + @options.path)
+  throw new Error("path #{@options.path} doesn't exist") unless path.existsSync(process.cwd() + @options.path)
   
   # accept either pt-BR.json or pt.json (or cson)
   files = fs.readdirSync(process.cwd() + @options.path).filter (file) -> /\w{2}(-\w{2})?\.(json|cson)$/.test file
@@ -47,14 +47,14 @@ I18n.middleware = (req, res, next) ->
     acceptHeader = req.header('Accept-Language')
     langs = acceptHeader.split(/,|;/g).filter((v) -> /^\w{2}(-\w{2})?$/.test) if acceptHeader
     langs ?= []
-    langs.push @options.default if langs.length < 1
+    langs.push I18n.options.default if langs.length < 1
       
     for lang in langs
       lang = lang.toLowerCase()
       req.session.lang = lang if lingo[lang]? and req.session?
         
     # default to EN
-    req.session.lang = @options.default if req.session? and not req.session.lang?
+    req.session.lang = I18n.options.default if req.session? and not req.session.lang?
     
     next()
 
