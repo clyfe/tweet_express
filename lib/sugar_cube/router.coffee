@@ -77,9 +77,9 @@ class Router extends ExpressRouter
   # @return {Router} for chaining
   # @api private
   _route: (method, path) ->
-    cb = arguments[arguments.length - 1]
-    return super if arguments.length < 3 or typeof cb != 'object' # just like old api
-    fn = @routeDefinition.middleware cb['to']
+    definition = arguments[arguments.length - 1]
+    return super if arguments.length < 3 or typeof definition != 'object' # just like old api
+    fn = @routeDefinition.middleware definition
     super(method, path, fn)
         
         
