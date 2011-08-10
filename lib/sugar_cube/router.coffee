@@ -2,9 +2,8 @@ ExpressRouter = require 'express/lib/router'
 Controller = require './controller'
 
 
-# MiddlewareDefinition is a helper 
-# for resolving routes definitions to actual middleware functions
-class DefinitionResolver
+# RouteDefinition resolves routes definitions to actual middleware functions
+class RouteDefinition
 
   
   # Creates a new middleware definition to be used in resolving routes
@@ -17,10 +16,11 @@ class DefinitionResolver
 
   # Returns a Connect middleware, given a route definition
   #
-  # @param {Function|String|Object} to - the middleware definition
+  # @param {Object} definition - the middleware definition
   # @return {Function} a Connect middleware (that resolves to the specified Controller)
   # @api public
-  middleware: (to) ->
+  middleware: (definition) ->
+    to = definition['to']
     switch typeof to
       when 'function'
         Controller.middleware to
@@ -61,10 +61,10 @@ class DefinitionResolver
 class Router extends ExpressRouter
   
   
-  # Construct with definition resolver for advanced routing dsl capabilities
+  # Construct with RouteDefinition for advanced routing dsl capabilities
   constructor: ->
     super
-    @definitionResolver = new DefinitionResolver @app
+    @routeDefinition = new RouteDefinition @app
 
 
   # Route `method`, `path`, and optional middleware
@@ -79,7 +79,7 @@ class Router extends ExpressRouter
   _route: (method, path) ->
     cb = arguments[arguments.length - 1]
     return super if arguments.length < 3 or typeof cb != 'object' # just like old api
-    fn = @definitionResolver.middleware cb['to']
+    fn = @routeDefinition.middleware cb['to']
     super(method, path, fn)
         
         
