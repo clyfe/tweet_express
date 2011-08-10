@@ -7,7 +7,6 @@
     , "coffeekup": "0.3.0beta"
     , "cson": ">= 0.1.1"
     , "lingo": ">= 0.0.4"
-    , "async": ">= 0.1.9"
     , "express": ">= 2.4.3"
     , "express-resource": ">= 0.2.1"
     , "express-namespace": ">= 0.0.3"
@@ -18,6 +17,7 @@
     , "mongodb": ">= 0.9.6-7"
     , "meta_code": ">= 0.0.1"
     , "browserify": ">= 1.4.0"
+    , "coffee-script": ">= 1.1.2"
   }
 }
 
