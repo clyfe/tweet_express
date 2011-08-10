@@ -70,7 +70,7 @@ class Controller
   # @next {Function} next - the in-router-provided next middleware, (error catcher etc.)
   # @api public
   constructor: (@req, @res, @next) ->
-    @session = @req.session
+    @session = @req.session # TODO: forward this, why does it not work via forward?
     
     # default layout, this can be changed at action level
     defaultViews = @res.app.set 'views'
@@ -168,7 +168,7 @@ class Controller
         throw new Error("#{action} is not a controller action") unless action in @actions
         @wrapErrorsMiddleware (req, res, next) => new @(req, res, next)[action]()
       else
-        throw new Error("unknown action #{cb}, only functions and strings valid actions")
+        throw new Error("unknown action #{action}, only functions and strings valid actions")
           
           
   # Extracts all the middlewares from this controller into a hash (js object)
