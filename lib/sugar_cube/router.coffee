@@ -53,7 +53,7 @@ class DefinitionResolver
   # @api public
   findController: (controller) ->
     controllersPath = @app.set 'controllers path'
-    raise new Error("please configure controllers path") unless controllersPath?
+    throw new Error("please configure controllers path") unless controllersPath?
     require "#{controllersPath}/#{controller}"
 
 
