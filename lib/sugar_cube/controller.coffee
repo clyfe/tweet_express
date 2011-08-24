@@ -41,7 +41,7 @@ class Controller
 
 
   # some sugar to access common methods faster
-  @forward 'req', 'param', 'app', 'flash'
+  @forward 'req', 'param', 'flash'
   @forward 'res', 'redirect', 'cookie', 'clearCookie', 'partial', 'download'
   
   
@@ -70,7 +70,10 @@ class Controller
   # @next {Function} next - the in-router-provided next middleware, (error catcher etc.)
   # @api public
   constructor: (@req, @res, @next) ->
-    @session = @req.session # TODO: forward this, why does it not work via forward?
+  
+    # copy needed properties, only functions can be forwarded
+    @app = @req.app
+    @session = @req.session
     
     # default layout, this can be changed at action level
     defaultViews = @res.app.set 'views'
@@ -132,7 +135,7 @@ class Controller
   #       @action index: ->
   #         @log_req()
   #         User.find (@err, @users) => @render 'users/index'
-  #       log_req: -> # regullar "private" method, cannot be called as an action
+  #       log_req: -> # regullar method, cannot be called as an action
   #         req = new Request req: @req
   #         req.save (@err) => console.log 'req logged'
   # 
