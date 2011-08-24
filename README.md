@@ -22,7 +22,7 @@ Makes writing small-ish Express apps in CoffeeScript a little better.
 # app/routes.coffee
 module.exports = ->
 
-  # Can use function callbacks
+  # Can use function callbacks that run inside of a controller context
   @get '/', to: ->
     @title = "Hello route function!"
     @render 'index'
