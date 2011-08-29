@@ -155,7 +155,7 @@ class Controller
   #
   #     class Sessions extends Controller
   #    
-  #     @get '/users', Users.to_middleware 'index' # executes index action
+  #     @get '/users', Users.middleware 'index' # executes index action
   #     
   #     # uses Sessions controller as execution context for the callback function
   #     @get '/login', Sessions.middleware -> @render 'login_form'

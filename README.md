@@ -110,10 +110,25 @@ coffee --nodejs --debug app.coffee
 
 ```
 app/
+  client/ - client specific modules (via browserify)
+    entry.coffee - client main (see browserify)
+    ...
   controllers/ - controller files
-  lang/ - I18n JSON files (soon to be CSON)
+    users.coffee
+    sessions.coffee
+    ...
+  locales/ - I18n JSON files (soon to be CSON)
+    en.cson
+    es.cson
+    ...
   models/ - Mongoose models
+    user.coffee
+    post.coffee
+    ...
   views/ - CoffeeKup view files
+    layouts/ - layout files
+      application.coffee - default layout
+      ...
   config.coffee - environment configuration, middleware, database connection
   helpers.coffee - view helpers here
   routes.coffee - routes definitions
