@@ -6,6 +6,16 @@ Controller = require './controller'
 class Router extends ExpressRouter
 
 
+  constructor: ->
+    super
+    
+    # paths to controller actions
+    @to = [] # @to.users.create(id: 10)
+    
+    # named paths
+    @at = [] # @at.download_file(name: 'file.txt')
+  
+
   # Route `method`, `path`, and optional middleware
   # to the callback defined by `cb`.
   # 
@@ -18,28 +28,20 @@ class Router extends ExpressRouter
   _route: (method, path) ->
     definition = arguments[arguments.length - 1]
     return super if arguments.length < 3 or typeof definition != 'object' # just like old api
-    fn = @resolveDefinition definition
-    super(method, path, fn)
-    
-    
-  # Returns a Connect middleware, given a route definition
-  #
-  # @param {Object} definition - the middleware definition
-  # @return {Function} a Connect middleware (that resolves to the specified Controller)
-  # @api public
-  resolveDefinition: (definition) ->
-    to = definition['to']
-    switch typeof to
+    {to, as} = definition
+    fn = switch typeof to
       when 'function'
         Controller.middleware to
       when 'string'
+        throw new Error("string route definition must be in the form 'controller#action'") unless to.match /(\w_)+#(\w_)+/
         [controller, action] = to.split '#'
-        @resolveControllerAction controller, action
+        @_resolveControllerAction controller, action
       when 'object'
         {controller, action} = to
-        @resolveControllerAction controller, action
+        @_resolveControllerAction controller, action
       else
         throw new Error("unknown route endpoint #{to}")
+    super method, path, fn
 
 
   # Validates the existence of controller and returns the resolved middleware
@@ -47,8 +49,8 @@ class Router extends ExpressRouter
   # @param {String} controller - the controller name
   # @param {String} action - the controller action (or skip if rest)
   # @return {Function} a Connect middleware (that resolves to the given controller and action)
-  # @api public
-  resolveControllerAction: (controller, action) ->
+  # @api private
+  _resolveControllerAction: (controller, action) ->
     throw new Error("cannot resolve controller") unless controller?
     action = 'index' unless action?
     @findController(controller).middleware action
@@ -63,17 +65,21 @@ class Router extends ExpressRouter
     controllersPath = @app.set 'controllers path'
     throw new Error("please configure controllers path") unless controllersPath?
     require "#{controllersPath}/#{controller}"
-        
-        
-  # X
+  
+  
+  # Return a url given a controller and an action, and optional params
+  # TODO: steal from https://github.com/josh/rack-mount/blob/master/lib/rack/mount/route_set.rb
   #
-  #     /users/:id
+  #     Given a route "/users/:id"
   #
   #     @urlFor controller: 'users', id: 10, page: 12
   #     /users/10?page=12
   #
-  urlFor: (opts) ->
-    {method, controller, action} = opts
+  url: (opts) ->
+    throw new Error('controller must be specified') unless opts.controller?
+    controller = opts.controller
+    action = opts.action || 'index'
+    method = opts.action || 'get'
     
 
 module.exports = Router
