@@ -171,7 +171,7 @@ class Controller
         throw new Error("#{action} is not a controller action") unless action in @actions
         @wrapErrorsMiddleware (req, res, next) => new @(req, res, next)[action]()
       else
-        throw new Error("unknown action #{action}, only functions and strings valid actions")
+        throw new Error("unknown action #{action}, only functions and strings represent valid actions")
           
           
   # Extracts all the middlewares from this controller into a hash (js object)

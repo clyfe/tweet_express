@@ -117,7 +117,7 @@ app/
     users.coffee
     sessions.coffee
     ...
-  locales/ - I18n JSON files (soon to be CSON)
+  locales/ - I18n CSON files (or JSON)
     en.cson
     es.cson
     ...
@@ -128,6 +128,9 @@ app/
   views/ - CoffeeKup view files
     layouts/ - layout files
       application.coffee - default layout
+    users/
+      index.coffee
+      new.coffee
       ...
   config.coffee - environment configuration, middleware, database connection
   helpers.coffee - view helpers here
