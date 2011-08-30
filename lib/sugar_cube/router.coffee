@@ -33,7 +33,7 @@ class Router extends ExpressRouter
       when 'function'
         Controller.middleware to
       when 'string'
-        throw new Error("string route definition must be in the form 'controller#action'") unless to.match /(\w_)+#(\w_)+/
+        throw new Error("string route definition must be in the form 'controller#action'") unless to.match /[\w_]+#[\w_]+/
         [controller, action] = to.split '#'
         @_resolveControllerAction controller, action
       when 'object'
