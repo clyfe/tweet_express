@@ -111,6 +111,9 @@ class Controller
     # Express api compatibility, just to make sure
     @[k] = v for k, v of @res._locals
 
+    # router function
+    return @res.render(template, @, fn) if @constructor == Controller
+
     defaultViews = @res.app.set 'views'
     render_with_views_path = (path) =>
       try
@@ -119,10 +122,8 @@ class Controller
       finally
         @res.app.set 'views', defaultViews
 
-    return @res.render(template, @, fn) if @constructor == Controller
-
     try # custom controller, try to scope under it's name
-      render_with_views_path "#{defaultViews}/#{@constructor.controllerName()}"
+      render_with_views_path "#{defaultViews}/#{@constructor.controllerName()}" # TODO: module path
     catch e
       throw e unless e.view instanceof View # e is a "Template not found" error
       @res.render template, @, fn   

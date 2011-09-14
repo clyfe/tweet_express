@@ -1,4 +1,4 @@
-p -> 'Hello Controller'
+p -> 'Hello Module Controller'
 
 for tweet in @tweets
   p -> tweet.body

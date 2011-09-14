@@ -9,6 +9,8 @@ module.exports = ->
   @get '/tweets', to: 'tweets#index', as: 'tweets'
   @post '/tweets', to: {controller: 'tweets', action: 'create'}, as: 'create_tweet'
   
+  @get '/admin/tweets', to: 'admin/tweets#index', as: 'admin_tweets'
+  
   # Namespaces
   @namespace '/admin', ->
     # Can use REST routing via express-resource

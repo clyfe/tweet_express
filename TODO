@@ -1,0 +1,7 @@
+* url generation
+* module paths in rendering
+* before filters (that convert to upstream middleware) on controllers
+* assets?
+  - https://github.com/TrevorBurnham/connect-assets ?
+  - see socketstream
+  

@@ -10,10 +10,10 @@ class Router extends ExpressRouter
     super
     
     # paths to controller actions
-    @to = [] # @to.users.create(id: 10)
+    @to = {} # @to.users.create(id: 10)
     
     # named paths
-    @at = [] # @at.download_file(name: 'file.txt')
+    @at = {} # @at.download_file(name: 'file.txt')
   
 
   # Route `method`, `path`, and optional middleware
@@ -72,7 +72,7 @@ class Router extends ExpressRouter
   #
   #     Given a route "/users/:id"
   #
-  #     @urlFor controller: 'users', id: 10, page: 12
+  #     @url controller: 'users', id: 10, page: 12
   #     /users/10?page=12
   #
   url: (opts) ->
